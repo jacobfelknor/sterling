@@ -41,7 +41,7 @@
                 </tr>
                 <tr>
                     <td><b>Password:</b> <br>**********</td>
-                    <td><a href="{% url 'accounts:change_password' %}"><button class="btn btn-outline-info">Change Password</button></a></td>
+                    <td><a href="{% url 'users:change_password' %}"><button class="btn btn-outline-info">Change Password</button></a></td>
                 </tr>
                 {% if user.is_superuser %}
                 <tr>
@@ -53,7 +53,7 @@
                 {% endif %}
             </tbody>
         </table>
-        <a href="{% url 'accounts:edit_info' user.username %}"><button class="btn btn-outline-dark">Edit</button></a>
+        <a href="{% url 'users:edit_info' user.username %}"><button class="btn btn-outline-dark">Edit</button></a>
     </div>
 </div>
 

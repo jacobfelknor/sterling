@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'accounts.apps.AccountsConfig',
+    'users.apps.UsersConfig',
     'crispy_forms',
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -130,13 +130,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-AUTH_USER_MODEL = 'accounts.User'
+AUTH_USER_MODEL = 'users.User'
 
 LOGIN_URL = 'login'
 
 LOGOUT_URL = 'logout'
 
 
-LOGIN_REDIRECT_URL = 'accounts:login_redirect'
+LOGIN_REDIRECT_URL = 'users:login_redirect'
 
 LOGOUT_REDIRECT_URL = 'home:home'

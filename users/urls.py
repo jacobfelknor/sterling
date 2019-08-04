@@ -2,7 +2,7 @@ from django.urls import path
 
 from . import forms, views
 
-app_name = 'accounts'
+app_name = 'users'
 
 urlpatterns = [
     path('login_redirect/', views.login_redirect, name='login_redirect'),

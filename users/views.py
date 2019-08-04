@@ -29,7 +29,7 @@ class UserSignUpView(CreateView):
 
 @login_required
 def login_redirect(request):
-    return redirect('accounts:view_account', username=request.user.username)
+    return redirect('users:view_account', username=request.user.username)
 
 @login_required
 def view_account(request, username):
@@ -40,12 +40,12 @@ def view_account(request, username):
     else:
         ctx['profile_complete'] = True
 
-    return render(request, 'accounts/view_account.html', ctx)
+    return render(request, 'users/view_account.html', ctx)
 
 class EditUserAccountView(UpdateView): #Note that we are using UpdateView and not FormView
     model = User
     form_class = UserAccountForm
-    template_name = "accounts/user_update.html"
+    template_name = "users/user_update.html"
 
     def get_object(self, *args, **kwargs):
         if self.request.user.username == self.kwargs['username']:
