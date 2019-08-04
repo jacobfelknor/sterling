@@ -1,5 +1,5 @@
 .env/
 sterlingenv/
-.vscode
+.vscode/
 db.sqlite3
 __pycache__/
