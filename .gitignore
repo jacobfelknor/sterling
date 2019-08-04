@@ -4,3 +4,4 @@ sterlingenv/
 db.sqlite3
 __pycache__/
 migrations/
+keys.py
