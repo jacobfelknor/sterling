@@ -1,0 +1,2 @@
+# sterling
+Personal finance tracker
