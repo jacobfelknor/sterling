@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<div class="card border">
+    <h2 class="card-header">{{ object.name }}</h2>
+    <div class="card-body">
+        <table class="table dt-responsive" cellspacing="0" width="100%">
+            <!-- <thead class="thead" id="material">
+                <tr>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead> -->
+            <tbody>
+                <tr>
+                    <td><b>Account #:</b> <br>{{ object.number }}</td>
+                    <td><b>Type:</b> <br>{{ object.account_type }}</td>
+                    <td><b>Bank:</b> <br>{{ object.bank }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table dt-responsive" cellspacing="0" width="100%">
+            <tr>
+                <td><b>Notes:</b> <br>{{ object.notes }}</td>
+            </tr>
+        </table>
+        <a href="{% url 'accounts:edit' object.id %}"><button class="btn btn-outline-dark">Edit</button></a>
+    </div>  <!-- card-body -->
+</div>  <!-- card -->
+
+
+
+<div class="card border">
+    <h2 class="card-header">Transactions</h2>
+    <div class="card-body">
+        <table id="account_list" class="table dt-responsive table-striped" cellspacing="0" width="100%">
+          <thead class="thead">
+            <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Time</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>  <!-- card-body -->
+  </div>  <!-- card -->
+
+
+
+{% endblock content %}

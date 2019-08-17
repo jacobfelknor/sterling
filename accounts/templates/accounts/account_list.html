@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<div class="card border">
+  <h2 class="card-header">Your Accounts</h2>
+  <div class="card-body">
+      <table id="account_list" class="table dt-responsive table-striped" cellspacing="0" width="100%">
+        <thead class="thead">
+          <tr>
+              <th>Name</th>
+              <th>Number</th>
+              <th>Type</th>
+              <th>Bank</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>  <!-- card-body -->
+</div>  <!-- card -->
+
+<a href="{% url 'accounts:create_account' %}"><button class="btn btn-outline-success">Add Account</button></a>
+
+
+
+{% endblock content %}
+
+
+{% block css %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap4.min.css">
+{% endblock css %}
+
+{% block javascript %}
+<script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.1.1/js/responsive.bootstrap4.min.js"></script>
+
+<script>
+
+var table = $('#account_list').DataTable( {
+    order: [[ 0, "asc" ]],
+    processing: true,
+    stateSave: true,
+    ajax: {
+        "processing": true,
+        "url": "{% url 'accounts:account_ajax' %}", //'accounts:account_ajax'
+        "dataSrc": ""
+    },
+    columns: [
+        { "data": "name",
+            "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+              $(nTd).html("<a href='{% url 'accounts:view' 1234 %}'>".replace(/1234/, oData.id.toString()) + oData.name + "</a>");
+          } 
+        },
+        { "data": "number" },
+        { "data": "account_type" },
+        { "data": "bank"},
+    ]
+});
+
+</script>
+{% endblock javascript %}
