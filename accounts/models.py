@@ -23,4 +23,4 @@ class Account(models.Model):
     notes = models.TextField(null=True)
 
     def get_absolute_url(self):
-        return reverse('accounts:view', args=(self.id,))
+        return reverse('accounts:view', args=(self.id,)) #pylint: disable=no-member
