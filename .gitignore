@@ -1,4 +1,4 @@
-.env/
+.venv/
 sterlingenv/
 .vscode/
 db.sqlite3

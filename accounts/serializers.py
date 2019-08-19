@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 
 class AccountSerializer(serializers.Serializer):
-    id = serializers.IntegerField()
+    uuid = serializers.CharField()
     name = serializers.CharField(max_length=50)
     number = serializers.IntegerField()
     account_type = serializers.CharField(max_length=10)

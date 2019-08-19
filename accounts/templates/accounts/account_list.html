@@ -53,7 +53,7 @@ var table = $('#account_list').DataTable( {
     columns: [
         { "data": "name",
             "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-              $(nTd).html("<a href='{% url 'accounts:view' 1234 %}'>".replace(/1234/, oData.id.toString()) + oData.name + "</a>");
+              $(nTd).html("<a href='{% url 'accounts:view' 1234 %}'>".replace(/1234/, oData.uuid.toString()) + oData.name + "</a>");
           } 
         },
         { "data": "number" },
