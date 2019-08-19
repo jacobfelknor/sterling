@@ -35,21 +35,59 @@
 <div class="card border">
     <h2 class="card-header">Transactions</h2>
     <div class="card-body">
-        <table id="account_list" class="table dt-responsive table-striped" cellspacing="0" width="100%">
+        <table id="transaction_list" class="table dt-responsive table-striped" cellspacing="0" width="100%">
           <thead class="thead">
             <tr>
                 <th>Name</th>
-                <th>Category</th>
                 <th>Amount</th>
-                <th>Time</th>
+                <th>Category</th>
+                <th>Date</th>
             </tr>
-          </thead>
-          <tbody>
-          </tbody>
-        </table>
-      </div>  <!-- card-body -->
-  </div>  <!-- card -->
-
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <a href="{% url 'transactions:create' %}?account={{ object.uuid }}"><button class="btn btn-outline-success">Add</button></a>
+    </div>  <!-- card-body -->
+</div>  <!-- card -->
 
 
 {% endblock content %}
+
+
+{% block css %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap4.min.css">
+{% endblock css %}
+
+{% block javascript %}
+<script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.1.1/js/responsive.bootstrap4.min.js"></script>
+
+<script>
+
+var table = $('#transaction_list').DataTable( {
+    order: [[ 0, "asc" ]],
+    processing: true,
+    stateSave: true,
+    ajax: {
+        "processing": true,
+        "url": "{% url 'transactions:ajax' %}?uuid={{ object.uuid }}", //'accounts:account_ajax'
+        "dataSrc": ""
+    },
+    columns: [
+        { "data": "name",
+        //     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+        //       $(nTd).html("<a href='#'>" + oData.name + "</a>");
+        //   } 
+        },
+        { "data": "amount"},
+        { "data": "category" },
+        { "data": "date" },
+    ]
+});
+
+</script>
+{% endblock javascript %}
