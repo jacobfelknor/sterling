@@ -1,7 +1,16 @@
 from django.forms import ModelForm
 from .models import Transaction
+from django import forms
 
-# Create the form class.
+from .widgets import FengyuanChenDatePickerInput
+
+class DateForm(forms.Form):
+    date = forms.DateField(
+        input_formats=['%d/%m/%Y %H:%M'], 
+        widget=FengyuanChenDatePickerInput()
+    )
+
+
 class TransactionForm(ModelForm):
     class Meta:
         model = Transaction

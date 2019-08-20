@@ -29,7 +29,7 @@ class UserSignUpView(CreateView):
 
 @login_required
 def login_redirect(request):
-    return redirect('users:view_profile', username=request.user.username)
+    return redirect('accounts:account_list')
 
 @login_required
 def view_profile(request, username):

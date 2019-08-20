@@ -1,6 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.views.generic import CreateView, DetailView, ListView, UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 from .forms import AccountForm
 from .models import Account
@@ -27,7 +28,7 @@ class CreateAccount(CreateView):
         form.save()
         return redirect('accounts:account_list')
 
-class EditAccount(UpdateView): #Note that we are using UpdateView and not FormView
+class EditAccount(UserPassesTestMixin, UpdateView): #Note that we are using UpdateView and not FormView
     model = Account
     form_class = AccountForm
     template_name = "accounts/edit_account.html"
@@ -37,10 +38,21 @@ class EditAccount(UpdateView): #Note that we are using UpdateView and not FormVi
         ctx['message'] = "Update Account"
         return ctx
 
+    def test_func(self):
+        auth_user = self.get_object().user
+        return self.request.user == auth_user
+
     # def get_success_url(self, *args, **kwargs):
     #     return reverse("accounts.views.view_account")
 
-class AccountList(ListView):
+class AccountView(UserPassesTestMixin, DetailView):
+    model = Account
+
+    def test_func(self):
+        auth_user = self.get_object().user
+        return self.request.user == auth_user
+
+class AccountList(LoginRequiredMixin, ListView):
     # TODO
     # figure out slug for viewing an account. uuid of sorts
     model = Account
@@ -48,10 +60,7 @@ class AccountList(ListView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         return ctx
-
-
-class AccountView(DetailView):
-    model = Account
+    
 
 def account_ajax(request):
     accounts = request.user.accounts.all()
