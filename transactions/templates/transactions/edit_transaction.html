@@ -13,7 +13,6 @@
         {% csrf_token %}
         <input type="hidden" name="next" value="{{ next }}">
         {{ form|crispy }}
-        <!-- {{ date_form.date }} -->
         <button type="submit" class="btn btn-outline-success">Save</button>
         </form>
         <br>
@@ -21,11 +20,12 @@
 </div>
 {% endblock %}
 
-
+{% block javascript %}
 <script>
     $(function () {
-        $("#id_date").datepicker({
-        format:'dd/mm/yyyy',
-        });
+      $("#id_date").datepicker({
+        format:'mm/dd/yyyy',
+      });
     });
 </script>
+{% endblock %}

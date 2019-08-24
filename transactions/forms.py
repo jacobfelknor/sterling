@@ -5,10 +5,7 @@ from django import forms
 from .widgets import FengyuanChenDatePickerInput
 
 class DateForm(forms.Form):
-    date = forms.DateField(
-        input_formats=['%d/%m/%Y %H:%M'], 
-        widget=FengyuanChenDatePickerInput()
-    )
+    date = forms.DateTimeField(input_formats=['%d/%m/%Y %H:%M'])
 
 
 class TransactionForm(ModelForm):
@@ -16,3 +13,6 @@ class TransactionForm(ModelForm):
         model = Transaction
         fields = ['name', 'amount', 'category', 'date', 'notes']
 
+    widgets = {
+            'date': forms.DateInput(attrs={'class': 'date'}, format='%d/%m/%Y %H:%M')
+        }
