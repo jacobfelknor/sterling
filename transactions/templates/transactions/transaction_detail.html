@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<div class="card border">
+    <!-- <h2 class="card-header">{{ object.name }}</h2> -->
+    <div class="card-body">
+        <table class="table dt-responsive" cellspacing="0" width="100%">
+            <thead class="thead-dark" id="material">
+                <tr>
+                    <th>Transaction Information</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><b>Name:</b> <br>{{ object.name }}</td>
+                    <td><b>Amount:</b> <br>${{ object.amount|floatformat:2 }}</td>
+                    <td><b>Category:</b> <br>{{ object.category }}</td>
+                    <td><b>Date:</b> <br>{{ object.date }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table dt-responsive" cellspacing="0" width="100%">
+            <tr>
+                <td><b>Notes:</b> <br>{{ object.notes }}</td>
+            </tr>
+        </table>
+        <a href="#"><button class="btn btn-outline-dark">Edit</button></a>
+    </div>  <!-- card-body -->
+</div>  <!-- card -->
+
+{% endblock content %}

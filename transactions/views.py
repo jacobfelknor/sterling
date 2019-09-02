@@ -4,7 +4,7 @@ from django.views.generic import CreateView, DetailView, ListView, UpdateView
 
 from accounts.models import Account
 
-from .forms import TransactionForm, DateForm
+from .forms import TransactionForm
 from .models import Transaction
 from .serializers import TransactionSerializer
 
@@ -31,7 +31,6 @@ class CreateTransaction(CreateView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         ctx['message'] = "Add Transaction"
-        ctx['date_form'] = DateForm
         return ctx
 
     def form_valid(self, form):

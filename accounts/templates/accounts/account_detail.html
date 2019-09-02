@@ -79,13 +79,23 @@ var table = $('#transaction_list').DataTable( {
     },
     columns: [
         { "data": "name",
-        //     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-        //       $(nTd).html("<a href='#'>" + oData.name + "</a>");
-        //   } 
+            "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                $(nTd).html("<a href='{% url 'transactions:view' 1234 %}'>".replace(/1234/, oData.uuid.toString()) + oData.name + "</a>");
+          } 
         },
-        { "data": "amount"},
+        { "data": "amount",
+            "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                $(nTd).html("$" + oData.amount.toFixed(2));
+          } 
+        },
         { "data": "category" },
-        { "data": "date" },
+        { "data": "date",  
+            "render": function (data) {
+                var date = new Date(data);
+                var month = date.getMonth() + 1;
+                return (month.toString().length > 1 ? month : "0" + month) + "/" + date.getDate() + "/" + date.getFullYear();
+            } 
+        },
     ]
 });
 

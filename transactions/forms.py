@@ -2,17 +2,21 @@ from django.forms import ModelForm
 from .models import Transaction
 from django import forms
 
-from .widgets import FengyuanChenDatePickerInput
-
-class DateForm(forms.Form):
-    date = forms.DateTimeField(input_formats=['%d/%m/%Y %H:%M'])
+class CategoryForm(forms.Form):
+    pass
 
 
 class TransactionForm(ModelForm):
     class Meta:
         model = Transaction
-        fields = ['name', 'amount', 'category', 'date', 'notes']
+        fields = ['name', 'amount', 'category']
+    
+    date = forms.DateTimeField(input_formats=['%m/%d/%Y'], widget=forms.TextInput(attrs={'autocomplete':'off'}))
+    notes = forms.CharField(widget=forms.Textarea(attrs={'autocomplete':'off'}))
 
-    widgets = {
-            'date': forms.DateInput(attrs={'class': 'date'}, format='%d/%m/%Y %H:%M')
-        }
+
+    # This seems to be broken for now:
+    # widgets = {
+    #         'date': forms.DateInput(attrs={'class': 'date'}, format='%d/%m/%Y %H:%M'),
+    #         'notes': forms.TextInput,
+    #     }
