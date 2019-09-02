@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.views.generic import CreateView, DetailView, ListView, UpdateView
@@ -34,9 +36,17 @@ class CreateTransaction(CreateView):
         return ctx
 
     def form_valid(self, form):
+        if self.request.method == 'POST':
+            get = self.request.POST.get
+        else:
+            get = self.request.GET.get
+
         form.save(commit=False)
         uuid = self.request.GET['account']
         form.instance.account = Account.objects.get(uuid=uuid)
+        form.instance.category = get('category')
+        form.instance.date = datetime.strptime(get('date'), '%m/%d/%Y')
+        form.instance.notes = get('notes')
         form.save()
         return redirect('accounts:view', slug=uuid)
 

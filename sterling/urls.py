@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import RedirectView
+from ajax_select import urls as ajax_select_urls
 
 urlpatterns = [
     path('', include('home.urls'), name='home'),
@@ -24,4 +25,5 @@ urlpatterns = [
     path('users/', include('django.contrib.auth.urls')),
     path('accounts/', include('accounts.urls')),
     path('transactions/', include('transactions.urls')),
+    path('ajax_select/', include(ajax_select_urls)),
 ]

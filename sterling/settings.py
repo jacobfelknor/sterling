@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users.apps.UsersConfig',
     'crispy_forms',
+    'ajax_select',
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
@@ -111,6 +112,12 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+AJAX_LOOKUP_CHANNELS = {
+      # specify a lookup to be loaded
+      # str: tuple
+      'categories': ('transactions.lookups', 'CategoryLookup'),
+  }
 
 
 # Internationalization
