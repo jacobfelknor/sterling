@@ -23,6 +23,46 @@ def transaction_ajax(request):
     return JsonResponse(response.data, safe=False)
 
 
+""" Server side processing example: """
+# def drawing_list_ajax(request):
+#     if request.method == "POST":
+#         get = request.POST.get
+#     else:
+#         get = request.GET.get
+
+#     start = int(get('start'))
+#     length = int(get('length'))
+#     end = start + length
+#     search = get('search[value]')
+#     order_column_index = int(get('order[0][column]'))
+#     order_direction = get('order[0][dir]')
+#     order_column_name = get('columns[{}][name]'.format(order_column_index))
+#     # print('{}, {}'.format(order_column_name, order_direction))
+#     if order_direction == "asc":
+#         drawings = Drawing.objects.order_by('{}'.format(order_column_name))
+#     else:
+#         drawings = Drawing.objects.order_by('-{}'.format(order_column_name))
+#     records_total = len(drawings)
+    
+#     if search:
+#         query = (Q(number__icontains=search) | Q(description__icontains=search) | 
+#                     Q(program_drawing__name__icontains=search) | Q(drawnby__name__icontains=search))
+#         drawings = drawings.filter(query)
+
+#     records_filtered = len(drawings)
+#     drawings = drawings[start:end]
+#     # drawing_qs = DrawingSerializer.setup_eager_load(drawings) # eager load is incompatible with serverside processing
+#     serializer = DrawingSerializer(drawings, many=True)
+#     response = {
+#         "draw": int(get('draw')),
+#         "recordsTotal": records_total,
+#         "recordsFiltered": records_filtered,
+#         "data": serializer.data,
+#     }
+
+#     return JsonResponse(response, safe=False)
+
+
 class CreateTransaction(CreateView):
     # TODO
     # - Add autocomplete field for category section
