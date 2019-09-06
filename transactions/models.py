@@ -24,4 +24,6 @@ class Transaction(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = self.uuid
+        self.account.balance += self.amount
+        self.account.save()
         super(Transaction, self).save(*args, **kwargs)

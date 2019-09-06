@@ -7,17 +7,19 @@
     <h2 class="card-header">{{ object.name }}</h2>
     <div class="card-body">
         <table class="table dt-responsive" cellspacing="0" width="100%">
-            <!-- <thead class="thead" id="material">
-                <tr>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </thead> -->
+            <thead class="thead" id="material">
+                {% if object.balance > 0 %}
+                <h2>Balance: <b style="color:#0ac775;">${{ object.balance|floatformat:2 }}</b></h2>
+                {% else %}
+                <h2>Balance: <b style="color:red;">${{ object.balance|floatformat:2 }}</b></h2>
+                {% endif %}
+            </thead>
             <tbody>
                 <tr>
                     <td><b>Account #:</b> <br>{{ object.number }}</td>
                     <td><b>Type:</b> <br>{{ object.account_type }}</td>
                     <td><b>Bank:</b> <br>{{ object.bank }}</td>
+                    <!-- <td><b>Balance:</b> <br>{{ object.balance }}</td> -->
                 </tr>
             </tbody>
         </table>
@@ -85,7 +87,11 @@ var table = $('#transaction_list').DataTable( {
         },
         { "data": "amount",
             "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                $(nTd).html("$" + oData.amount.toFixed(2));
+                if(oData.amount > 0){
+                    $(nTd).html("<span style='color:#0ac775;'>$" + oData.amount.toFixed(2) + "</span>");
+                }else{
+                    $(nTd).html("<span style='color:red;'>-$" + (-1*oData.amount).toFixed(2) + "</span>");
+                }
           } 
         },
         { "data": "category" },
