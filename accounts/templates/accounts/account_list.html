@@ -10,6 +10,7 @@
         <thead class="thead">
           <tr>
               <th>Name</th>
+              <th>Balance</th>
               <th>Number</th>
               <th>Type</th>
               <th>Bank</th>
@@ -55,6 +56,15 @@ var table = $('#account_list').DataTable( {
             "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
               $(nTd).html("<a href='{% url 'accounts:view' 1234 %}'>".replace(/1234/, oData.uuid.toString()) + oData.name + "</a>");
           } 
+        },
+        { "data": "balance",
+          "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                  if(oData.balance > 0){
+                      $(nTd).html("<span style='color:#0ac775;'>$" + oData.balance.toFixed(2) + "</span>");
+                  }else{
+                      $(nTd).html("<span style='color:red;'>-$" + (-1*oData.balance).toFixed(2) + "</span>");
+                  }
+            } 
         },
         { "data": "number" },
         { "data": "account_type" },

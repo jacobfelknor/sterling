@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card border">
+    <h2 class="card-header">Your Dashboard</h2>
+    <div class="card-body">
+        <table>
+            <tr>
+                <td><div id="piechart1" style="width: 500px; height: 500px;"></div></td>
+                <td><div id="piechart2" style="width: 500px; height: 500px;"></div></td>
+            </tr>
+        </table>
+    </div>  <!-- card-body -->
+</div>  <!-- card -->
+
+
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+
+        var data = google.visualization.arrayToDataTable([
+          ['Task', 'Hours per Day'],
+          ['Work',     11],
+          ['Eat',      2],
+          ['Commute',  2],
+          ['Watch TV', 2],
+          ['Sleep',    7]
+        ]);
+
+        var options = {
+          title: 'My Daily Activities'
+        };
+
+        var chart1 = new google.visualization.PieChart(document.getElementById('piechart1'));
+        var chart2 = new google.visualization.PieChart(document.getElementById('piechart2'));
+
+        chart1.draw(data, options);
+        chart2.draw(data, options);
+      }
+</script>
+{% endblock javascript %}
