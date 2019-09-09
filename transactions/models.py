@@ -24,6 +24,14 @@ class Transaction(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = self.uuid
+        # standardize the categories for consitancy
+        category_words = self.category.split()
+        self.category = ""
+        for word in category_words:
+            if word != category_words[-1]:
+                self.category += word.capitalize() + " "
+            else:
+                self.category += word.capitalize()
         self.account.balance += self.amount
         self.account.save()
         super(Transaction, self).save(*args, **kwargs)

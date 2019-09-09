@@ -7,4 +7,5 @@ def home(request):
     return render(request, 'home/home.html')
 
 def dashboard(request):
-    return render(request, 'home/dashboard.html')
+    ctx = {}
+    return render(request, 'home/dashboard.html', ctx)

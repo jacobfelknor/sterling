@@ -62,7 +62,7 @@ var table = $('#account_list').DataTable( {
                   if(oData.balance > 0){
                       $(nTd).html("<span style='color:#0ac775;'>$" + oData.balance.toFixed(2) + "</span>");
                   }else{
-                      $(nTd).html("<span style='color:red;'>-$" + (-1*oData.balance).toFixed(2) + "</span>");
+                      $(nTd).html("<span style='color:red;'>$" + (oData.balance).toFixed(2) + "</span>");
                   }
             } 
         },
