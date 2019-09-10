@@ -6,8 +6,46 @@
     <div class="card-body">
         <table>
             <tr>
-                <td><div id="piechart1" style="width: 500px; height: 500px;"></div></td>
-                <td><div id="piechart2" style="width: 500px; height: 500px;"></div></td>
+                <td>
+                  <div class="card-border" style="width: 500px; height: 500px;">
+                    <h5 class="card-header">Net Worth</h5>
+                    <div class="card-body">
+                      <table class="table dt-responsive table-striped" cellspacing="0" width="100%">
+                        {% for account in accounts %}
+                        <tr>
+                          <td>{{ account.name }}</td>
+                          {% if account.balance > 0 %}
+                          <td><b>Balance:</b> <span style='color:#0ac775;'>${{ account.balance }}</span></td>
+                          {% else %}
+                          <td><b>Balance:</b> <span style='color:red;'>${{ account.balance }}</span></td>
+                          {% endif %}
+                        </tr>
+                        {% endfor %}
+                      </table>
+                    </div>
+                  </div>
+                </td>
+                <td><div id="networth" style="width: 500px; height: 500px;"></div></td>
+            </tr>
+            <tr>
+                <td>
+                  <div class="card-border" style="width: 500px; height: 500px;">
+                    <h5 class="card-header">Categories</h5>
+                    <div class="card-body">
+                      <table class="table dt-responsive table-striped" cellspacing="0" width="100%">
+                        {% for dict in category_stats %}
+                        {% for key, value in dict.items %}
+                        <tr>
+                          <td>{{ key }}</td>
+                          <td>{{ value }}</td>
+                        </tr>
+                        {% endfor %}
+                        {% endfor %}
+                      </table>
+                    </div>
+                  </div>
+                </td>
+                <td><div id="categories" style="width: 500px; height: 500px;"></div></td>
             </tr>
         </table>
     </div>  <!-- card-body -->
@@ -25,23 +63,59 @@
       function drawChart() {
 
         var data = google.visualization.arrayToDataTable([
-          ['Task', 'Hours per Day'],
-          ['Work',     11],
-          ['Eat',      2],
-          ['Commute',  2],
-          ['Watch TV', 2],
-          ['Sleep',    7]
+
+          ['Task', 'Account Balance'],
+          {% for account in accounts %}
+          {% if account.balance > 0 %}
+          ['{{ account.name }}', {{ account.balance }}],
+          {% endif %}
+          {% endfor %}
+          // ['Work',     11],
+          // ['Eat',      2],
+          // ['Commute',  2],
+          // ['Watch TV', 2],
+          // ['Sleep',    7]
         ]);
 
         var options = {
-          title: 'My Daily Activities'
+          title: 'Net Worth by Account'
         };
 
-        var chart1 = new google.visualization.PieChart(document.getElementById('piechart1'));
-        var chart2 = new google.visualization.PieChart(document.getElementById('piechart2'));
+        var chart = new google.visualization.PieChart(document.getElementById('networth'));
+  
+        chart.draw(data, options);
+      }
+</script>
 
-        chart1.draw(data, options);
-        chart2.draw(data, options);
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+
+        var data = google.visualization.arrayToDataTable([
+
+          ['Task', 'Categories'],
+          {% for dict in category_stats %}
+          {% for key, value in dict.items %}
+          ['{{ key }}', {{ value }}],
+          {% endfor %}
+          {% endfor %}
+          // ['Work',     11],
+          // ['Eat',      2],
+          // ['Commute',  2],
+          // ['Watch TV', 2],
+          // ['Sleep',    7]
+        ]);
+
+        var options = {
+          title: 'Category Breakdown'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('categories'));
+  
+        chart.draw(data, options);
       }
 </script>
 {% endblock javascript %}
