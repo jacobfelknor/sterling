@@ -11,7 +11,7 @@ def home(request):
 def dashboard(request):
     ctx = {}
     all_accounts = Account.objects.filter(user=request.user)
-    transactions = Transaction.objects.all()
+    transactions = Transaction.objects.filter(account__user=request.user)
     categories = set([obj.category for obj in transactions])
     category_stats = [{category: len(Transaction.objects.filter(category=category))} for category in categories] 
     net_worth = 0

@@ -5,6 +5,26 @@
     <h2 class="card-header">Your Dashboard</h2>
     <div class="card-body">
         <table>
+          <tr>
+            <td>
+              <div class="card-border" style="width: 500px; height: 500px;">
+                  <h5 class="card-header">Categories</h5>
+                  <div class="card-body">
+                    <table class="table dt-responsive table-striped" cellspacing="0" width="100%">
+                      {% for dict in category_stats %}
+                      {% for key, value in dict.items %}
+                      <tr>
+                        <td>{{ key }}</td>
+                        <td>{{ value }}</td>
+                      </tr>
+                      {% endfor %}
+                      {% endfor %}
+                    </table>
+                  </div>
+                </div>
+              </td>
+              <td><div id="categories" style="width: 500px; height: 500px; float: right;"></div></td>
+            </tr>
             <tr>
                 <td>
                   <div class="card-border" style="width: 500px; height: 500px;">
@@ -25,27 +45,7 @@
                     </div>
                   </div>
                 </td>
-                <td><div id="networth" style="width: 500px; height: 500px;"></div></td>
-            </tr>
-            <tr>
-                <td>
-                  <div class="card-border" style="width: 500px; height: 500px;">
-                    <h5 class="card-header">Categories</h5>
-                    <div class="card-body">
-                      <table class="table dt-responsive table-striped" cellspacing="0" width="100%">
-                        {% for dict in category_stats %}
-                        {% for key, value in dict.items %}
-                        <tr>
-                          <td>{{ key }}</td>
-                          <td>{{ value }}</td>
-                        </tr>
-                        {% endfor %}
-                        {% endfor %}
-                      </table>
-                    </div>
-                  </div>
-                </td>
-                <td><div id="categories" style="width: 500px; height: 500px;"></div></td>
+                <td><div id="networth" style="width: 500px; height: 500px; float: right;"></div></td>
             </tr>
         </table>
     </div>  <!-- card-body -->
