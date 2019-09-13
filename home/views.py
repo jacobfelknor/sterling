@@ -1,13 +1,17 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from transactions.models import Transaction
+
 from accounts.models import Account
+from transactions.models import Transaction
 from users.models import User
+
 # Create your views here.
 
 
 def home(request):
     return render(request, 'home/home.html')
 
+@login_required
 def dashboard(request):
     ctx = {}
     all_accounts = Account.objects.filter(user=request.user)

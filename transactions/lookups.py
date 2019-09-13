@@ -19,4 +19,6 @@ class CategoryLookup(LookupChannel):
     def get_result(self, item):
         return u"%s" % item
 
-        
+    # def check_auth(self, request):
+    #     return True
+    #     return super().check_auth(request)
