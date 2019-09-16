@@ -40,10 +40,10 @@
         <table id="transaction_list" class="table dt-responsive table-striped" cellspacing="0" width="100%">
           <thead class="thead">
             <tr>
-                <th>Name</th>
-                <th>Amount</th>
-                <th>Category</th>
                 <th>Date</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Amount</th>
             </tr>
         </thead>
         <tbody>
@@ -71,7 +71,7 @@
 <script>
 
 var table = $('#transaction_list').DataTable( {
-    order: [[ 0, "asc" ]],
+    order: [[ 0, "desc" ]],
     processing: true,
     stateSave: true,
     ajax: {
@@ -80,11 +80,25 @@ var table = $('#transaction_list').DataTable( {
         "dataSrc": ""
     },
     columns: [
+        { "data": "date",  
+            "fnCreatedCell": function (nTd, sData, oData, iRow, iCol){
+                var date = new Date(oData.date);
+                var month = date.getMonth() + 1;
+                // $(nTd).html(oData.date);
+                $(nTd).html((month.toString().length > 1 ? month : "0" + month) + "/" + date.getDate() + "/" + date.getFullYear());
+            },
+            // "render": function (data) {
+            //     var date = new Date(data);
+            //     var month = date.getMonth() + 1;
+            //     return (month.toString().length > 1 ? month : "0" + month) + "/" + date.getDate() + "/" + date.getFullYear();
+            // } 
+        },
         { "data": "name",
             "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                 $(nTd).html("<a href='{% url 'transactions:view' 1234 %}'>".replace(/1234/, oData.uuid.toString()) + oData.name + "</a>");
           } 
         },
+        { "data": "category" },
         { "data": "amount",
             "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                 if(oData.amount > 0){
@@ -93,14 +107,6 @@ var table = $('#transaction_list').DataTable( {
                     $(nTd).html("<span style='color:red;'>-$" + (-1*oData.amount).toFixed(2) + "</span>");
                 }
           } 
-        },
-        { "data": "category" },
-        { "data": "date",  
-            "render": function (data) {
-                var date = new Date(data);
-                var month = date.getMonth() + 1;
-                return (month.toString().length > 1 ? month : "0" + month) + "/" + date.getDate() + "/" + date.getFullYear();
-            } 
         },
     ]
 });
