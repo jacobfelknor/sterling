@@ -1,6 +1,7 @@
 from datetime import datetime
 
-from django.http import JsonResponse
+from django.core.files.storage import FileSystemStorage
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.views.generic import CreateView, DetailView, ListView, UpdateView
 
@@ -93,3 +94,13 @@ class CreateTransaction(CreateView):
 
 class TransactionView(DetailView):
     model = Transaction
+
+
+def transaction_import(request):
+    if request.method == "POST" and request.FILES['import']:
+        myfile = request.FILES['import']
+        fs = FileSystemStorage()
+        filename = fs.save(myfile.name, myfile)
+        return HttpResponse("File has been uploaded!")
+
+    return render(request, "transactions/import.html")
