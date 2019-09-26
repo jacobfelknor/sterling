@@ -111,14 +111,18 @@ def transaction_import(request):
         io_string = io.StringIO(decoded_file)
 
         fieldnames = ["Transaction Number","Date","Description","Memo","Amount Debit","Amount Credit","Balance","Check Number","Fees" ,"Principal" ,"Interest"]
-        csv_reader = csv.DictReader(io_string, delimiter=',', quotechar='|', fieldnames=fieldnames)
+        csv_reader = csv.DictReader(io_string, delimiter=',', quotechar='"', fieldnames=fieldnames)
         line_count = 0
         for line in csv_reader:
             if line_count not in [0,1,2,3]:
+                if line.get("Amount Debit"):
+                    amount = float(line.get("Amount Debit"))
+                else:
+                    amount = float(line.get("Amount Credit"))
                 new_transaction = Transaction(
                     account=account,
                     name=line["Memo"][1:-1],
-                    amount=float(line['Amount Debit']),
+                    amount=amount,
                     category=line['Description'][1:-1],
                     date=datetime.strptime(line['Date'], '%m/%d/%Y'),
                     notes="Imported on {}".format(datetime.today().strftime('%m/%d/%Y')),
