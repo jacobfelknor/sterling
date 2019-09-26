@@ -11,12 +11,14 @@
 <div class="card border">
     <h2 class="card-header">Upload a file</h2>
     <div class="card-body">
+        <p>Drag and drop a file or click on choose</p>
         <form action="{% url 'transactions:import' %}" method='post' enctype="multipart/form-data">
             {% csrf_token %}
             <div style="width:550px; height: 150px;">
                 <input type="file" name='import' class="form-control" style="width:550px; height: 150px; padding-top: 50px; padding-left: 180px;">
-                <p class="small">Drag and drop a file or click on choose</p>
+                <p class="small">Sterling never saves or shares the files you upload. We only process the file for import</p>
             </div>
+            <input type="hidden" name="uuid" value="{{ uuid }}">
             <br>
             <button type="submit" class="btn btn-outline-success">Import</button>
         </form>

@@ -50,7 +50,7 @@
         </tbody>
     </table>
     <a href="{% url 'transactions:create' %}?account={{ object.uuid }}"><button class="btn btn-outline-success">Add</button></a>
-    <a href="{% url 'transactions:import' %}"><button class="btn btn-outline-primary">Import CSV</button></a>
+    <a href="{% url 'transactions:import' %}?uuid={{ object.uuid }}"><button class="btn btn-outline-primary">Import CSV</button></a>
     </div>  <!-- card-body -->
 </div>  <!-- card -->
 
@@ -97,7 +97,8 @@ var table = $('#transaction_list').DataTable( {
         { "data": "name",
             "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                 $(nTd).html("<a href='{% url 'transactions:view' 1234 %}'>".replace(/1234/, oData.uuid.toString()) + oData.name + "</a>");
-          } 
+          },
+          "class": "nowrap"
         },
         { "data": "category" },
         { "data": "amount",

@@ -1,5 +1,8 @@
+import csv
+import io
 from datetime import datetime
 
+from django.core.exceptions import PermissionDenied
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
@@ -95,12 +98,38 @@ class CreateTransaction(CreateView):
 class TransactionView(DetailView):
     model = Transaction
 
-
 def transaction_import(request):
-    if request.method == "POST" and request.FILES['import']:
-        myfile = request.FILES['import']
-        fs = FileSystemStorage()
-        filename = fs.save(myfile.name, myfile)
-        return HttpResponse("File has been uploaded!")
+    if request.method == "POST" and request.FILES.get('import'):
+        get = request.POST.get
+        account = Account.objects.filter(uuid=get('uuid')).first()
+        if request.user != account.user:
+            raise PermissionDenied()
 
-    return render(request, "transactions/import.html")
+        csvfile = request.FILES['import']
+        decoded_file = csvfile.read().decode('utf-8')
+        io_string = io.StringIO(decoded_file)
+
+        fieldnames = ["Transaction Number","Date","Description","Memo","Amount Debit","Amount Credit","Balance","Check Number","Fees" ,"Principal" ,"Interest"]
+        csv_reader = csv.DictReader(io_string, delimiter=',', quotechar='|', fieldnames=fieldnames)
+        line_count = 0
+        for line in csv_reader:
+            if line_count not in [0,1,2,3]:
+                new_transaction = Transaction(
+                    account=account,
+                    name=line["Memo"][1:-1],
+                    amount=float(line['Amount Debit']),
+                    category=line['Description'][1:-1],
+                    date=datetime.strptime(line['Date'], '%m/%d/%Y'),
+                    notes="Imported on {}".format(datetime.today().strftime('%m/%d/%Y')),
+                )
+                new_transaction.save()
+            line_count += 1
+        return redirect('accounts:view', slug=get('uuid'))
+    else:
+        uuid = request.GET['uuid']
+        account = Account.objects.filter(uuid=uuid).first()
+        if request.user != account.user:
+            raise PermissionDenied()
+        ctx = {}
+        ctx['uuid'] = uuid
+        return render(request, "transactions/import.html", ctx)
