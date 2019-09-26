@@ -2,6 +2,7 @@ import csv
 import io
 from datetime import datetime
 
+from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse, JsonResponse
@@ -124,6 +125,7 @@ def transaction_import(request):
                 )
                 new_transaction.save()
             line_count += 1
+        messages.add_message(request, messages.INFO, "Transactions successfully imported!")
         return redirect('accounts:view', slug=get('uuid'))
     else:
         uuid = request.GET['uuid']
