@@ -121,11 +121,11 @@ def transaction_import(request):
                     amount = float(line.get("Amount Credit"))
                 new_transaction = Transaction(
                     account=account,
-                    name=line["Memo"][1:-1],
+                    name=line["Memo"],
                     amount=amount,
-                    category=line['Description'][1:-1],
+                    category=line['Description'],
                     date=datetime.strptime(line['Date'], '%m/%d/%Y'),
-                    notes="Imported on {}".format(datetime.today().strftime('%m/%d/%Y')),
+                    notes="Imported on {} from csv".format(datetime.today().strftime('%m/%d/%Y')),
                 )
                 new_transaction.save()
             line_count += 1
