@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- <div class="file-upload-wrapper">
+    <input type="file" id="input-file-now-custom-2" class="file-upload"
+   data-height="500" />
+</div> -->
+
+
+<div class="card border">
+    <h2 class="card-header">Upload a file</h2>
+    <div class="card-body">
+        <p>Drag and drop a file or click on choose</p>
+        <form action="{% url 'transactions:import' %}" method='post' enctype="multipart/form-data">
+            {% csrf_token %}
+            <div style="width:550px; height: 150px;">
+                <input type="file" name='import' class="form-control" style="width:550px; height: 150px; padding-top: 50px; padding-left: 180px;">
+                <p class="small">Sterling never saves or shares the files you upload. We only process the file for import</p>
+                <p class="small">NOTE: Sterling currently only supports import from Elevations bank accounts using the CSV (Excel) format</p>
+            </div>
+            <input type="hidden" name="uuid" value="{{ uuid }}">
+            <br><br><br><br>
+            <button type="submit" class="btn btn-outline-success">Import</button>
+        </form>
+    </div>  <!-- card-body -->
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+<!-- <script>
+    $('.file-upload').file_upload();
+</script> -->
+
+{% endblock %}
