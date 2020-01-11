@@ -10,12 +10,58 @@
     <h2 class="card-header">{{ message }}</h2>
     <div class="col-md-8 col-sm-10 col-12">
         <form method="post" novalidate>
-        {% csrf_token %}
-        <input type="hidden" name="next" value="{{ next }}">
-        {{ form|crispy }}
-        <button type="submit" class="btn btn-outline-success">Save</button>
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}">
+            {{ form|crispy }}
+            <button type="submit" class="btn btn-outline-success">Save</button>
+            <button type="button" id="unlock_first" data-toggle="modal" data-target="#confirm_unlock"
+                class="btn btn-outline-dark"><i class="fa fa-lock"></i>
+                Unlock
+                Balance</button>
         </form>
         <br>
     </div>
 </div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="confirm_unlock" tabindex="-1" role="dialog" aria-labelledby="confirm_unlockTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Unlock Balance?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Modifying the balance should only be done for manual corrections.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" id="unlock" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-lock"></i>
+                    Unlock</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block javascript %}
+<script>
+
+    $(document).ready(function () {
+        $("#id_balance").attr("readonly", "readonly");
+    });
+
+    $("#unlock").on("click", function () {
+        $("#id_balance").removeAttr("readonly");
+        $("#unlock_first").css("display", "none");
+    })
+
+
+</script>
+
 {% endblock %}

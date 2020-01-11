@@ -29,9 +29,9 @@
                 <td><b>Notes:</b> <br>{{ object.notes }}</td>
             </tr>
         </table>
-        <!-- removed edit button below for clarity until functionality is implemented -->
-        <!-- <a href="#"><button class="btn btn-outline-dark">Edit</button></a> -->
-    </div>  <!-- card-body -->
-</div>  <!-- card -->
+        <a href="{% url 'accounts:view' account_uuid %}"><button class="btn btn-outline-primary">Back</button></a>
+        <a href="{% url 'transactions:edit' object.uuid %}"><button class="btn btn-outline-dark">Edit</button></a>
+    </div> <!-- card-body -->
+</div> <!-- card -->
 
 {% endblock content %}

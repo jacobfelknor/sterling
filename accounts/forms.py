@@ -5,9 +5,5 @@ from .models import Account
 class AccountForm(ModelForm):
     class Meta:
         model = Account
-        fields = ['name', 'number', 'bank', 'account_type', 'notes']
+        fields = ["name", "number", "balance", "bank", "account_type", "notes"]
 
-    # def save(self):
-    #     account = 
-
-    #     return account
