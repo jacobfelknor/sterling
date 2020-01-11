@@ -1,13 +1,14 @@
+import copy
 import csv
+import decimal
 import io
 from datetime import datetime
 
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
-from django.core.files.storage import FileSystemStorage
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.shortcuts import redirect, render
-from django.views.generic import CreateView, DetailView, ListView, UpdateView
+from django.views.generic import CreateView, DetailView, UpdateView
 
 from accounts.models import Account
 
@@ -16,6 +17,8 @@ from .models import Transaction
 from .serializers import TransactionSerializer
 
 # Create your views here.
+
+
 def transaction_ajax(request):
     if request.method == "POST":
         get = request.POST.get
@@ -54,7 +57,7 @@ def transaction_ajax(request):
 
 #     records_filtered = len(drawings)
 #     drawings = drawings[start:end]
-#     # drawing_qs = DrawingSerializer.setup_eager_load(drawings) # eager load is incompatible with serverside processing
+#     # drawing_qs = DrawingSerializer.setup_eager_load(drawings) # eager load is incompatible with serverside
 #     serializer = DrawingSerializer(drawings, many=True)
 #     response = {
 #         "draw": int(get('draw')),
@@ -64,6 +67,15 @@ def transaction_ajax(request):
 #     }
 
 #     return JsonResponse(response, safe=False)
+
+
+class TransactionView(DetailView):
+    model = Transaction
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx["account_uuid"] = self.object.account.uuid
+        return ctx
 
 
 class CreateTransaction(CreateView):
@@ -94,8 +106,28 @@ class CreateTransaction(CreateView):
         return redirect("accounts:view", slug=uuid)
 
 
-class TransactionView(DetailView):
+class TransactionEdit(UpdateView):
     model = Transaction
+    form_class = TransactionForm
+    template_name = "transactions/edit_transaction.html"
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx["message"] = "Edit Transaction"
+        return ctx
+
+    def form_valid(self, form):
+        # access old values before save
+        # https://stackoverflow.com/questions/56305992/how-to-access-previous-value-of-a-field-in-django-model-form-before-save
+        obj = Transaction.objects.get(pk=form.instance.pk)
+        prev_obj = copy.copy(obj)
+        # here you can access any field of your previous object related to that instance.
+
+        # subtract old amount value from account balance to accuratley reflect balance after edit
+        form.instance.account.balance -= prev_obj.amount
+        # form.save below takes care of saving the account instance as well
+        form.save()
+        return redirect("transactions:view", slug=self.object.uuid)
 
 
 def transaction_import(request):
@@ -127,9 +159,9 @@ def transaction_import(request):
         for line in csv_reader:
             if line_count not in [0, 1, 2, 3]:
                 if line.get("Amount Debit"):
-                    amount = float(line.get("Amount Debit"))
+                    amount = decimal.Decimal(line.get("Amount Debit"))
                 else:
-                    amount = float(line.get("Amount Credit"))
+                    amount = decimal.Decimal(line.get("Amount Credit"))
                 new_transaction = Transaction(
                     account=account,
                     name=line["Memo"],

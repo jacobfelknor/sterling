@@ -14,7 +14,7 @@ class Transaction(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     slug = models.SlugField()
     name = models.CharField("Transaction Name", max_length=200)
-    amount = models.FloatField("Amount", null=True)
+    amount = models.DecimalField("Amount", max_digits=1000, decimal_places=2, null=True)
     category = models.CharField("Category", max_length=100, null=True)
     date = models.DateField("Date", null=True)
     notes = models.TextField(null=True)
