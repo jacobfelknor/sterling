@@ -15,15 +15,19 @@
         <form action="{% url 'transactions:import' %}" method='post' enctype="multipart/form-data">
             {% csrf_token %}
             <div style="width:550px; height: 150px;">
-                <input type="file" name='import' class="form-control" style="width:550px; height: 150px; padding-top: 50px; padding-left: 180px;">
-                <p class="small">Sterling never saves or shares the files you upload. We only process the file for import</p>
-                <p class="small">NOTE: Sterling currently only supports import from Elevations bank accounts using the CSV (Excel) format</p>
+                <input type="file" name='import' class="form-control"
+                    style="width:550px; height: 150px; padding-top: 50px; padding-left: 180px;">
+                <p class="small">Sterling never saves or shares the files you upload. We only process the file for
+                    import</p>
+                <p class="small">NOTE: Sterling currently only supports import from Elevations bank accounts using the
+                    CSV (Excel) format</p>
             </div>
             <input type="hidden" name="uuid" value="{{ uuid }}">
             <br><br><br><br>
-            <button type="submit" class="btn btn-outline-success">Import</button>
+            <button type="submit" class="btn btn-outline-success"><i class="fa fa-cloud-upload" aria-hidden="true"></i>
+                Import</button>
         </form>
-    </div>  <!-- card-body -->
+    </div> <!-- card-body -->
 </div>
 
 {% endblock %}

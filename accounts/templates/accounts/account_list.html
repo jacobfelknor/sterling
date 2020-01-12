@@ -2,27 +2,36 @@
 
 {% block content %}
 
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-danger" role="alert">
+  {{ message }}
+</div>
+<!-- <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li> -->
+{% endfor %}
+{% endif %}
 
 <div class="card border">
   <h2 class="card-header">Your Accounts</h2>
   <div class="card-body">
-      <table id="account_list" class="table dt-responsive table-striped" cellspacing="0" width="100%">
-        <thead class="thead">
-          <tr>
-              <th>Name</th>
-              <th>Balance</th>
-              <th>Number</th>
-              <th>Type</th>
-              <th>Bank</th>
-          </tr>
-        </thead>
-        <tbody>
-        </tbody>
-      </table>
-    </div>  <!-- card-body -->
-</div>  <!-- card -->
+    <table id="account_list" class="table dt-responsive table-striped" cellspacing="0" width="100%">
+      <thead class="thead">
+        <tr>
+          <th>Name</th>
+          <th>Balance</th>
+          <th>Number</th>
+          <th>Type</th>
+          <th>Bank</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div> <!-- card-body -->
+</div> <!-- card -->
 
-<a href="{% url 'accounts:create_account' %}"><button class="btn btn-outline-success">Add Account</button></a>
+<a href="{% url 'accounts:create_account' %}"><button class="btn btn-outline-success"><i class="fa fa-plus-circle"
+      aria-hidden="true"></i> Add Account</button></a>
 
 
 
@@ -42,35 +51,37 @@
 
 <script>
 
-var table = $('#account_list').DataTable( {
-    order: [[ 0, "asc" ]],
+  var table = $('#account_list').DataTable({
+    order: [[0, "asc"]],
     processing: true,
     stateSave: true,
     ajax: {
-        "processing": true,
-        "url": "{% url 'accounts:account_ajax' %}", //'accounts:account_ajax'
-        "dataSrc": ""
+      "processing": true,
+      "url": "{% url 'accounts:account_ajax' %}", //'accounts:account_ajax'
+      "dataSrc": ""
     },
     columns: [
-        { "data": "name",
-            "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-              $(nTd).html("<a href='{% url 'accounts:view' 1234 %}'>".replace(/1234/, oData.uuid.toString()) + oData.name + "</a>");
-          } 
-        },
-        { "data": "balance",
-          "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                  if(oData.balance > 0){
-                      $(nTd).html("<span style='color:#0ac775;'>$" + oData.balance.toFixed(2) + "</span>");
-                  }else{
-                      $(nTd).html("<span style='color:red;'>$" + (oData.balance).toFixed(2) + "</span>");
-                  }
-            } 
-        },
-        { "data": "number" },
-        { "data": "account_type" },
-        { "data": "bank"},
+      {
+        "data": "name",
+        "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+          $(nTd).html("<a href='{% url 'accounts:view' 1234 %}'>".replace(/1234/, oData.uuid.toString()) + oData.name + "</a>");
+        }
+      },
+      {
+        "data": "balance",
+        "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+          if (oData.balance > 0) {
+            $(nTd).html("<span style='color:#0ac775;'>$" + oData.balance.toFixed(2) + "</span>");
+          } else {
+            $(nTd).html("<span style='color:red;'>$" + (oData.balance).toFixed(2) + "</span>");
+          }
+        }
+      },
+      { "data": "number" },
+      { "data": "account_type" },
+      { "data": "bank" },
     ]
-});
+  });
 
 </script>
 {% endblock javascript %}

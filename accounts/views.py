@@ -1,7 +1,8 @@
-from django.http import JsonResponse
-from django.shortcuts import redirect, render
-from django.views.generic import CreateView, DetailView, ListView, UpdateView
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.http import JsonResponse
+from django.shortcuts import redirect
+from django.views.generic import CreateView, DetailView, ListView, UpdateView
 
 from .forms import AccountForm
 from .models import Account
@@ -47,6 +48,13 @@ class EditAccount(UserPassesTestMixin, UpdateView):  # Note that we are using Up
     # redirect to this url on successful save
     # def get_success_url(self, *args, **kwargs):
     #     return reverse("accounts.views.view_account")
+
+
+def delete_account(request, slug):
+    account = Account.objects.get(uuid=slug)
+    account.delete()
+    messages.add_message(request, messages.INFO, "Account successfully deleted")
+    return redirect("accounts:account_list")
 
 
 class AccountView(UserPassesTestMixin, DetailView):

@@ -3,12 +3,12 @@
 {% block content %}
 
 {% if messages %}
-    {% for message in messages %}
-        <div class="alert alert-success" role="alert">
-            {{ message }}
-        </div>
-        <!-- <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li> -->
-    {% endfor %}
+{% for message in messages %}
+<div class="alert alert-success" role="alert">
+    {{ message }}
+</div>
+<!-- <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li> -->
+{% endfor %}
 {% endif %}
 
 <div class="card border">
@@ -36,9 +36,10 @@
                 <td><b>Notes:</b> <br>{{ object.notes }}</td>
             </tr>
         </table>
-        <a href="{% url 'accounts:edit' object.uuid %}"><button class="btn btn-outline-dark">Edit</button></a>
-    </div>  <!-- card-body -->
-</div>  <!-- card -->
+        <a href="{% url 'accounts:edit' object.uuid %}"><button class="btn btn-outline-dark"><i class="fa fa-cog"></i>
+                Settings</button></a>
+    </div> <!-- card-body -->
+</div> <!-- card -->
 
 
 
@@ -46,21 +47,24 @@
     <h2 class="card-header">Transactions</h2>
     <div class="card-body">
         <table id="transaction_list" class="table dt-responsive table-striped" cellspacing="0" width="100%">
-          <thead class="thead">
-            <tr>
-                <th>Date</th>
-                <th>Name</th>
-                <th>Category</th>
-                <th>Amount</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
-    <a href="{% url 'transactions:create' %}?account={{ object.uuid }}"><button class="btn btn-outline-success">Add</button></a>
-    <a href="{% url 'transactions:import' %}?uuid={{ object.uuid }}"><button class="btn btn-outline-primary">Import CSV</button></a>
-    </div>  <!-- card-body -->
-</div>  <!-- card -->
+            <thead class="thead">
+                <tr>
+                    <th>Date</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <a href="{% url 'transactions:create' %}?account={{ object.uuid }}"><button class="btn btn-outline-success"><i
+                    class="fa fa-plus-circle" aria-hidden="true"></i> Add</button></a>
+        <a href="{% url 'transactions:import' %}?uuid={{ object.uuid }}"><button class="btn btn-outline-primary"><i
+                    class="fa fa-cloud-upload" aria-hidden="true"></i> Import
+                CSV</button></a>
+    </div> <!-- card-body -->
+</div> <!-- card -->
 
 
 {% endblock content %}
@@ -79,47 +83,50 @@
 
 <script>
 
-var table = $('#transaction_list').DataTable( {
-    order: [[ 0, "desc" ]],
-    processing: true,
-    stateSave: true,
-    ajax: {
-        "processing": true,
-        "url": "{% url 'transactions:ajax' %}?uuid={{ object.uuid }}", //'accounts:account_ajax'
-        "dataSrc": ""
-    },
-    columns: [
-        { "data": "date",  
-            "fnCreatedCell": function (nTd, sData, oData, iRow, iCol){
-                var date = new Date(oData.date);
-                var month = date.getMonth() + 1;
-                // $(nTd).html(oData.date);
-                $(nTd).html((month.toString().length > 1 ? month : "0" + month) + "/" + date.getDate() + "/" + date.getFullYear());
+    var table = $('#transaction_list').DataTable({
+        order: [[0, "desc"]],
+        processing: true,
+        stateSave: true,
+        ajax: {
+            "processing": true,
+            "url": "{% url 'transactions:ajax' %}?uuid={{ object.uuid }}", //'accounts:account_ajax'
+            "dataSrc": ""
+        },
+        columns: [
+            {
+                "data": "date",
+                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                    var date = new Date(oData.date);
+                    var month = date.getMonth() + 1;
+                    // $(nTd).html(oData.date);
+                    $(nTd).html((month.toString().length > 1 ? month : "0" + month) + "/" + date.getDate() + "/" + date.getFullYear());
+                },
+                // "render": function (data) {
+                //     var date = new Date(data);
+                //     var month = date.getMonth() + 1;
+                //     return (month.toString().length > 1 ? month : "0" + month) + "/" + date.getDate() + "/" + date.getFullYear();
+                // }
             },
-            // "render": function (data) {
-            //     var date = new Date(data);
-            //     var month = date.getMonth() + 1;
-            //     return (month.toString().length > 1 ? month : "0" + month) + "/" + date.getDate() + "/" + date.getFullYear();
-            // } 
-        },
-        { "data": "name",
-            "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                $(nTd).html("<a href='{% url 'transactions:view' 1234 %}'>".replace(/1234/, oData.uuid.toString()) + oData.name + "</a>");
-          },
-          "class": "nowrap"
-        },
-        { "data": "category" },
-        { "data": "amount",
-            "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                if(oData.amount > 0){
-                    $(nTd).html("<span style='color:#0ac775;'>$" + oData.amount.toFixed(2) + "</span>");
-                }else{
-                    $(nTd).html("<span style='color:red;'>-$" + (-1*oData.amount).toFixed(2) + "</span>");
+            {
+                "data": "name",
+                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                    $(nTd).html("<a href='{% url 'transactions:view' 1234 %}'>".replace(/1234/, oData.uuid.toString()) + oData.name + "</a>");
+                },
+                "class": "nowrap"
+            },
+            { "data": "category" },
+            {
+                "data": "amount",
+                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                    if (oData.amount > 0) {
+                        $(nTd).html("<span style='color:#0ac775;'>$" + oData.amount.toFixed(2) + "</span>");
+                    } else {
+                        $(nTd).html("<span style='color:red;'>-$" + (-1 * oData.amount).toFixed(2) + "</span>");
+                    }
                 }
-          } 
-        },
-    ]
-});
+            },
+        ]
+    });
 
 </script>
 {% endblock javascript %}
