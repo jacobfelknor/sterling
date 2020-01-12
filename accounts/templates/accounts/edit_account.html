@@ -8,23 +8,28 @@
 
 <div class="card border-dark mb-3">
     <h2 class="card-header">{{ message }}</h2>
-    <div class="col-md-8 col-sm-10 col-12">
+    <div class="container-fluid">
         <form method="post" novalidate>
             {% csrf_token %}
             <input type="hidden" name="next" value="{{ next }}">
             {{ form|crispy }}
-            <button type="submit" class="btn btn-outline-success">Save</button>
+            <button type="submit" class="btn btn-outline-success"><i class="fa fa-floppy-o" aria-hidden="true"></i>
+                Save</button>
             <button type="button" id="unlock_first" data-toggle="modal" data-target="#confirm_unlock"
                 class="btn btn-outline-dark"><i class="fa fa-lock"></i>
                 Unlock
                 Balance</button>
+            {% if object %}
+            <button type="button" class="btn btn-outline-danger float-right" data-toggle="modal"
+                data-target="#confirm_delete"><i class="fa fa-trash"></i> Delete</button>
+            {% endif %}
         </form>
         <br>
     </div>
 </div>
 
 
-<!-- Modal -->
+<!-- Balance Modal -->
 <div class="modal fade" id="confirm_unlock" tabindex="-1" role="dialog" aria-labelledby="confirm_unlockTitle"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -39,13 +44,41 @@
                 Modifying the balance should only be done for manual corrections.
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>
+                    Cancel</button>
                 <button type="button" id="unlock" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-lock"></i>
                     Unlock</button>
             </div>
         </div>
     </div>
 </div>
+
+
+{% if object %}
+<!-- Delete Modal -->
+<div class="modal fade" id="confirm_delete" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Account?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                The account and all its transactions will be deleted. This is permanent and cannot be undone.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>
+                    Cancel</button>
+                <a href="{% url 'accounts:delete' object.uuid %}"><button class="btn btn-danger"><i
+                            class="fa fa-trash"></i>
+                        Delete</button></a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
 {% endblock %}
 
 
