@@ -130,6 +130,15 @@ class TransactionEdit(UpdateView):
         return redirect("transactions:view", slug=self.object.uuid)
 
 
+def transaction_delete(request, slug):
+    obj = Transaction.objects.get(uuid=slug)
+    account_uuid = obj.account.uuid
+    obj.account.balance -= obj.amount
+    obj.account.save()
+    obj.delete()
+    return redirect("accounts:view", slug=account_uuid)
+
+
 def transaction_import(request):
     if request.method == "POST" and request.FILES.get("import"):
         get = request.POST.get
