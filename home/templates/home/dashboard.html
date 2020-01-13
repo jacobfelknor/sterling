@@ -2,10 +2,10 @@
 
 {% block content %}
 <div class="card border">
-    <h2 class="card-header">Your Dashboard</h2>
-    <div class="card-body">
-        <table>
-          <tr>
+  <h2 class="card-header">Your Dashboard</h2>
+  <div class="card-body">
+    <table>
+      <!-- <tr>
             <td>
               <div class="card-border" style="width: 500px; height: 500px;">
                   <h5 class="card-header">Categories</h5>
@@ -24,52 +24,54 @@
                 </div>
               </td>
               <td><div id="categories" style="width: 500px; height: 500px; float: right;"></div></td>
-            </tr>
-            <tr>
-                <td>
-                  <div class="card-border" style="width: 500px; height: 500px;">
-                    <h5 class="card-header">Net Worth</h5>
-                    <div class="card-body">
-                      <table class="table dt-responsive table-striped" cellspacing="0" width="100%">
-                        {% for account in accounts %}
-                        <tr>
-                          <td>{{ account.name }}</td>
-                          {% if account.balance > 0 %}
-                          <td><b>Balance:</b> <span style='color:#0ac775;'>${{ account.balance }}</span></td>
-                          {% else %}
-                          <td><b>Balance:</b> <span style='color:red;'>${{ account.balance }}</span></td>
-                          {% endif %}
-                        </tr>
-                        {% endfor %}
-                      </table>
-                    </div>
-                  </div>
-                </td>
-                <td><div id="networth" style="width: 500px; height: 500px; float: right;"></div></td>
-            </tr>
-        </table>
-    </div>  <!-- card-body -->
-</div>  <!-- card -->
+            </tr> -->
+      <tr>
+        <td>
+          <div class="card-border" style="width: 500px; height: 500px;">
+            <h5 class="card-header">Net Worth</h5>
+            <div class="card-body">
+              <table class="table dt-responsive table-striped" cellspacing="0" width="100%">
+                {% for account in accounts %}
+                <tr>
+                  <td>{{ account.name }}</td>
+                  {% if account.balance > 0 %}
+                  <td><b>Balance:</b> <span style='color:#0ac775;'>${{ account.balance }}</span></td>
+                  {% else %}
+                  <td><b>Balance:</b> <span style='color:red;'>${{ account.balance }}</span></td>
+                  {% endif %}
+                </tr>
+                {% endfor %}
+              </table>
+            </div>
+          </div>
+        </td>
+        <td>
+          <div id="networth" style="width: 500px; height: 500px; float: right;"></div>
+        </td>
+      </tr>
+    </table>
+  </div> <!-- card-body -->
+</div> <!-- card -->
 
 
 {% endblock %}
 
 {% block javascript %}
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-      google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawChart);
+<script type="text/javascript">
+  google.charts.load('current', { 'packages': ['corechart'] });
+  google.charts.setOnLoadCallback(drawChart);
 
-      function drawChart() {
+  function drawChart() {
 
-        var data = google.visualization.arrayToDataTable([
+    var data = google.visualization.arrayToDataTable([
 
-          ['Task', 'Account Balance'],
-          {% for account in accounts %}
-          {% if account.balance > 0 %}
-          ['{{ account.name }}', {{ account.balance }}],
-          {% endif %}
-          {% endfor %}
+      ['Task', 'Account Balance'],
+      {% for account in accounts %}
+  {% if account.balance > 0 %}
+  ['{{ account.name }}', {{ account.balance }}],
+    {% endif %}
+  {% endfor %}
           // ['Work',     11],
           // ['Eat',      2],
           // ['Commute',  2],
@@ -77,31 +79,31 @@
           // ['Sleep',    7]
         ]);
 
-        var options = {
-          title: 'Net Worth by Account'
-        };
+  var options = {
+    title: 'Net Worth by Account'
+  };
 
-        var chart = new google.visualization.PieChart(document.getElementById('networth'));
-  
-        chart.draw(data, options);
+  var chart = new google.visualization.PieChart(document.getElementById('networth'));
+
+  chart.draw(data, options);
       }
 </script>
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-      google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawChart);
+<script type="text/javascript">
+  google.charts.load('current', { 'packages': ['corechart'] });
+  google.charts.setOnLoadCallback(drawChart);
 
-      function drawChart() {
+  function drawChart() {
 
-        var data = google.visualization.arrayToDataTable([
+    var data = google.visualization.arrayToDataTable([
 
-          ['Task', 'Categories'],
-          {% for dict in category_stats %}
-          {% for key, value in dict.items %}
-          ['{{ key }}', {{ value }}],
-          {% endfor %}
-          {% endfor %}
+      ['Task', 'Categories'],
+      {% for dict in category_stats %}
+  {% for key, value in dict.items %}
+  ['{{ key }}', {{ value }}],
+    {% endfor %}
+  {% endfor %}
           // ['Work',     11],
           // ['Eat',      2],
           // ['Commute',  2],
@@ -109,13 +111,13 @@
           // ['Sleep',    7]
         ]);
 
-        var options = {
-          title: 'Category Breakdown'
-        };
+  var options = {
+    title: 'Category Breakdown'
+  };
 
-        var chart = new google.visualization.PieChart(document.getElementById('categories'));
-  
-        chart.draw(data, options);
+  var chart = new google.visualization.PieChart(document.getElementById('categories'));
+
+  chart.draw(data, options);
       }
 </script>
 {% endblock javascript %}
