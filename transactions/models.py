@@ -19,6 +19,9 @@ class Transaction(models.Model):
     date = models.DateField("Date", null=True)
     notes = models.TextField(null=True)
 
+    class Meta:
+        unique_together = ("name", "amount", "category", "date")
+
     def get_absolute_url(self):
         return reverse("transactions:view", args=(self.slug,))
 
@@ -32,6 +35,7 @@ class Transaction(models.Model):
                 self.category += word.capitalize() + " "
             else:
                 self.category += word.capitalize()
+        super(Transaction, self).save(*args, **kwargs)
+        # only save account balance after the transaction has been successfully saved
         self.account.balance += self.amount
         self.account.save()
-        super(Transaction, self).save(*args, **kwargs)

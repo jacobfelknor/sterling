@@ -6,6 +6,7 @@ from datetime import datetime
 
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
+from django.db import IntegrityError
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.views.generic import CreateView, DetailView, UpdateView
@@ -165,6 +166,8 @@ def transaction_import(request):
         ]
         csv_reader = csv.DictReader(io_string, delimiter=",", quotechar='"', fieldnames=fieldnames)
         line_count = 0
+        attempted = 0  # keep track of attempted saves
+        duplicates = []
         for line in csv_reader:
             if line_count not in [0, 1, 2, 3]:
                 if line.get("Amount Debit"):
@@ -179,9 +182,33 @@ def transaction_import(request):
                     date=datetime.strptime(line["Date"], "%m/%d/%Y"),
                     notes="Imported on {} from csv".format(datetime.today().strftime("%m/%d/%Y")),
                 )
-                new_transaction.save()
+                try:
+                    attempted += 1
+                    new_transaction.save()
+                except IntegrityError:
+                    duplicates.append(new_transaction)
             line_count += 1
-        messages.add_message(request, messages.INFO, "Transactions successfully imported!")
+        if duplicates:
+            if len(duplicates) == attempted:
+                messages.add_message(
+                    request,
+                    messages.INFO,
+                    "ATTENTION: No new transactions added. All attempted transactions were duplicates. Have you \
+                        uploaded this file before?",
+                    extra_tags="danger",
+                )
+            else:
+                messages.add_message(
+                    request, messages.INFO, "Transactions successfully imported!", extra_tags="success"
+                )
+                messages.add_message(
+                    request,
+                    messages.INFO,
+                    "WARNING: Some duplicates were ignored. Click here to review the import",
+                    extra_tags="warning",
+                )
+        else:
+            messages.add_message(request, messages.INFO, "Transactions successfully imported!", extra_tags="success")
         return redirect("accounts:view", slug=get("uuid"))
     else:
         uuid = request.GET["uuid"]
