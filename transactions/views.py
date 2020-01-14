@@ -202,10 +202,7 @@ def transaction_import(request):
                     request, messages.INFO, "Transactions successfully imported!", extra_tags="success"
                 )
                 messages.add_message(
-                    request,
-                    messages.INFO,
-                    "WARNING: Some duplicates were ignored. Click here to review the import",
-                    extra_tags="warning",
+                    request, messages.INFO, "WARNING: Some duplicates were ignored.", extra_tags="warning",
                 )
         else:
             messages.add_message(request, messages.INFO, "Transactions successfully imported!", extra_tags="success")
