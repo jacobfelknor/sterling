@@ -2,15 +2,6 @@
 
 {% block content %}
 
-{% if messages %}
-{% for message in messages %}
-<div class="alert alert-danger" role="alert">
-  {{ message }}
-</div>
-<!-- <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li> -->
-{% endfor %}
-{% endif %}
-
 <div class="card border">
   <h2 class="card-header">Your Accounts</h2>
   <div class="card-body">

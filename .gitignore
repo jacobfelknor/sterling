@@ -3,3 +3,4 @@ sterlingenv/
 db.sqlite3
 __pycache__/
 keys.py
+home/templates/olddash.txt
