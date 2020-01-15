@@ -90,7 +90,7 @@
                     var date = new Date(oData.date);
                     var month = date.getMonth() + 1;
                     // $(nTd).html(oData.date);
-                    $(nTd).html((month.toString().length > 1 ? month : "0" + month) + "/" + date.getDate() + "/" + date.getFullYear());
+                    $(nTd).html((month.toString().length > 1 ? month : "0" + month) + "/" + (date.getDate() + 1) + "/" + date.getFullYear());
                 },
                 // "render": function (data) {
                 //     var date = new Date(data);
