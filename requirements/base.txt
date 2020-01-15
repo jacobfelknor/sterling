@@ -1,5 +1,6 @@
 django==2.2.8
-psycopg2==2.8.3
+psycopg2==2.8.3 # for postgres
+mysql-connector-python==8.0.19 # for mysql
 django-crispy-forms==1.7.2
 djangorestframework==3.10.2
 django-ajax-selects==1.7.1
