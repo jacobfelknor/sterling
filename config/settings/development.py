@@ -11,7 +11,17 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-from .keys import secret_key, db_password
+
+try:
+    from .keys import secret_key, db_password
+except ImportError as e:
+    print(
+        "\n***********************************\n\nWARNING: {}. Using default configuration. This should ONLY be used by Travis for build testing.\n\n***********************************\n".format(
+            e
+        )
+    )
+    db_password = ""
+    secret_key = "3u57j-w!+4m_k-f1(or!1d_n4bmrwi!+a@x9xvdt^r0qs(jj@!"  # NOTE: This is an alternate secret key for build testing ONLY!
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -62,7 +72,7 @@ ROOT_URLCONF = "sterling.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR + "/sterling/templates",],
+        "DIRS": [BASE_DIR + "/sterling/templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -106,10 +116,10 @@ DATABASES = {
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",},
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
 AJAX_LOOKUP_CHANNELS = {
