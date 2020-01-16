@@ -18,7 +18,7 @@ Clone the sterling repository into a suitable directory. Create a virtual enviro
 python -m venv <venv_name>
 ```
 
-Activate your virtual environment:
+Activate your virtual environment:\
 Windows:
 ```bash
 ./<venv_name>/Scripts/activate
@@ -37,8 +37,7 @@ pip install -r requirements/base.txt
 Ensure you have a database management software installed. We recommend [PostgreSQL](https://www.postgresql.org/download/) or [MySQL](https://dev.mysql.com/downloads/).
 We also recommend a DBMS GUI, such as [pgAdmin 4](https://www.pgadmin.org/download/) for PostgreSQL, or [MySQL Workbench](https://dev.mysql.com/downloads/) for MySQL
 
-After your database manager of choice is installed, create a database named "schedulecu".
-
+After your database manager of choice is installed, create a database named "sterling"\
 **NOTE:** Creating the database and configuring passwords is beyond the scope of this documentation, however it is an important step. Please reference external sources for this information
 
 Create a "keys.py" file in the config folder. Secret keys can be generated [here](https://miniwebtool.com/django-secret-key-generator/) 
