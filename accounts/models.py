@@ -15,6 +15,7 @@ class Account(models.Model):
         ("Checking", "Checking"),
         ("Savings", "Savings"),
         ("Investment", "Investment"),
+        ("Credit", "Credit"),
         ("Other", "Other"),
     ]
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)

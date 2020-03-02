@@ -14,7 +14,7 @@ from django.views.generic import CreateView, DetailView, UpdateView
 from accounts.models import Account
 
 from .forms import TransactionForm
-from .models import Transaction
+from .models import Transaction, Category
 from .serializers import TransactionSerializer
 
 # Create your views here.
@@ -100,7 +100,7 @@ class CreateTransaction(CreateView):
         form.save(commit=False)
         uuid = self.request.GET["account"]
         form.instance.account = Account.objects.get(uuid=uuid)
-        form.instance.category = get("category")
+        form.instance.category = form.cleaned_data["category"]
         form.instance.date = datetime.strptime(get("date"), "%m/%d/%Y")
         form.instance.notes = get("notes")
         form.save()

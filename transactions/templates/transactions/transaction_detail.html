@@ -19,7 +19,7 @@
                 <tr>
                     <td><b>Name:</b> <br>{{ object.name }}</td>
                     <td><b>Amount:</b> <br>${{ object.amount|floatformat:2 }}</td>
-                    <td><b>Category:</b> <br>{{ object.category }}</td>
+                    <td><b>Category:</b> <br>{{ object.category.name }}</td>
                     <td><b>Date:</b> <br>{{ object.date }}</td>
                 </tr>
             </tbody>
