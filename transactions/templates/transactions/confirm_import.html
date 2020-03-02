@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+
+<form action="#" method="POST">
+    {{ form.media }}
+    {% crispy form %}
+</form>
+<br>
+<br>
+<br>
+New Transactions:
+<br>
+{% for transaction in news %}
+{{ transaction.name }}
+<hr>
+{% endfor %}
+
+Duplicates:
+<br>
+{% for transaction in duplicates %}
+{{ transaction.name }}
+<hr>
+{% endfor %}
+
+
+<a href="{% url 'transactions:confirm_import' %}"><button class="btn btn-outline-success">Confirm
+        Import</button></a>
+
+
+{% endblock %}
+
+{% block javascript %}
+<script>
+    $(function () {
+        $("#id_date_0").datepicker({
+            format: 'mm/dd/yyyy',
+        });
+    });
+</script>
+{% endblock %}

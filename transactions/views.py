@@ -13,8 +13,8 @@ from django.views.generic import CreateView, DetailView, UpdateView
 
 from accounts.models import Account
 
-from .forms import TransactionForm
-from .models import Transaction
+from .forms import TransactionForm, ConfirmTransactionForm
+from .models import TempTransaction, Transaction
 from .serializers import TransactionSerializer
 
 # Create your views here.
@@ -140,6 +140,10 @@ def transaction_delete(request, slug):
     return redirect("accounts:view", slug=account_uuid)
 
 
+def confirm_import(request):
+    pass
+
+
 def transaction_import(request):
     if request.method == "POST" and request.FILES.get("import"):
         get = request.POST.get
@@ -168,25 +172,36 @@ def transaction_import(request):
         line_count = 0
         attempted = 0  # keep track of attempted saves
         duplicates = []
+        news = []
+        form_fields = []
         for line in csv_reader:
             if line_count not in [0, 1, 2, 3]:
                 if line.get("Amount Debit"):
                     amount = decimal.Decimal(line.get("Amount Debit"))
                 else:
                     amount = decimal.Decimal(line.get("Amount Credit"))
-                new_transaction = Transaction(
-                    account=account,
-                    name=line["Memo"],
-                    amount=amount,
-                    category=line["Description"],
-                    date=datetime.strptime(line["Date"], "%m/%d/%Y"),
-                    notes="Imported on {} from csv".format(datetime.today().strftime("%m/%d/%Y")),
-                )
-                try:
-                    attempted += 1
-                    new_transaction.save()
-                except IntegrityError:
+                transaction_dict = {
+                    "account": account,
+                    "name": line["Memo"],
+                    "amount": amount,
+                    "category": line["Description"],
+                    "date": datetime.strptime(line["Date"], "%m/%d/%Y"),
+                    "notes": "Imported on {} from csv".format(datetime.today().strftime("%m/%d/%Y")),
+                }
+                if TempTransaction.objects.filter(**transaction_dict).count():
+                    # if temp transaction object already exists, use it instead of creating a new one
+                    new_transaction = TempTransaction.objects.filter(**transaction_dict).first()
+                else:
+                    new_transaction = TempTransaction(**transaction_dict)
+                attempted += 1
+                if Transaction.objects.filter(**transaction_dict).count() > 0:
                     duplicates.append(new_transaction)
+                else:
+                    # form_fields.append()
+                    # FIGURE OUT HOW TO ADD THESE FIELDS IN FOR VIEWING
+                    new_transaction.save()
+                    news.append(new_transaction)
+
             line_count += 1
         if duplicates:
             if len(duplicates) == attempted:
@@ -206,7 +221,14 @@ def transaction_import(request):
                 )
         else:
             messages.add_message(request, messages.INFO, "Transactions successfully imported!", extra_tags="success")
-        return redirect("accounts:view", slug=get("uuid"))
+        form = ConfirmTransactionForm()
+        ctx = {
+            "news": news,
+            "duplicates": duplicates,
+            "uuid": get("uuid"),
+            "form": form,
+        }
+        return render(request, "transactions/confirm_import.html", ctx)
     else:
         uuid = request.GET["uuid"]
         account = Account.objects.filter(uuid=uuid).first()
