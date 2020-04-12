@@ -21,9 +21,75 @@
 {% block javascript %}
 <script>
   $(function () {
+    // setup datepicker
     $("#id_date").datepicker({
       format: 'mm/dd/yyyy',
     });
+
+    // set autocomplete fields as required (javascript enforced instead of server side)
+    // couldn't do this through python side so enforce it here
+    $("[name='ledger_account_0']").attr("required", "true");
+
   });
+
+  // helper function to deal with row html for additional visitors in context
+  function decodeHtml(html) {
+    var txt = document.createElement("textarea");
+    txt.innerHTML = html;
+    return txt.value;
+  }
+
+  // state variable for the number of ledger rows there are
+  var form_count = $("input[name^='ledger_account_']").length - 1;
+
+  // additional ledgers
+  $("#button-id-add_ledger").click(function () {
+    form_count++;
+    var html = decodeHtml(`{{ row }}`);
+    // append a new row to the additional_rows div
+    $(html).appendTo("#additional_rows");
+
+    // go through a fix all field names. Must update to the correct index
+    // uses the form_count state variable to do this
+    $("#additional_rows").find("[name='ledger_account_0']").attr("name", `ledger_account_${form_count}`)
+      .attr("id", `id_ledger_account_${form_count}`).attr("required", "true");
+    $("#additional_rows").find("[name='ledger_memo_0']").attr("name", `ledger_memo_${form_count}`)
+      .attr("id", `id_ledger_memo_${form_count}`);
+    $("#additional_rows").find("[name='ledger_amount_0']").attr("name", `ledger_amount_${form_count}`)
+      .attr("id", `id_ledger_amount_0${form_count}`).attr("required", "true");
+    // initialize all new autocomplete forms
+    console.log($(window).trigger('init-autocomplete'));
+  });
+
+  var checksum = false;
+  $("#submit-id-submit").click(function (e) {
+    if (checksum) {
+      checksum = false; // reset state var
+      return // break an infinite loop
+    }
+    e.preventDefault();
+    amount_fields = $("input[name^='ledger_amount_']");
+    total = 0;
+    for (var i = 0; i < amount_fields.length; i++) {
+      total += Number(amount_fields[i].value);
+    }
+    if (total != 0) {
+      alert("Entered amounts do not balance!");
+
+    } else {
+      checksum = true;
+      $(this).trigger('click');
+    }
+  });
+
+  // Remove a visitor row
+  function rm_row(row) {
+    console.log(row);
+    $(row).remove();
+    form_count--;
+    // cur_val = Number($("#id_total_visitors").val()) - 1;
+    // // update the total_visitors hidden field in the form
+    // $("#id_total_visitors").attr("value", `${cur_val--}`);
+  }
 </script>
 {% endblock %}

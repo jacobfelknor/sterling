@@ -1,6 +1,7 @@
 import copy
 import csv
 import decimal
+import html
 import io
 from datetime import datetime
 from itertools import zip_longest
@@ -10,12 +11,13 @@ from django.core.exceptions import PermissionDenied
 from django.db import IntegrityError
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
+from django.template.loader import render_to_string
 from django.views.generic import CreateView, DetailView, UpdateView
 
 from accounts.models import Account
 
 from .forms import TransactionForm
-from .models import Transaction, Ledger
+from .models import Ledger, Transaction
 from .serializers import TransactionSerializer
 
 # Create your views here.
@@ -147,7 +149,12 @@ def transaction_form(request):
         uuid = request.GET.get("account")
         form = TransactionForm(uuid=uuid)
         ctx["message"] = "Create a Transaction"
+
+    # grab additional visitor row html as a string for template context
+    row = html.unescape(render_to_string("transactions/row.html").replace("\n", ""))
     ctx["form"] = form
+    ctx["row"] = row
+    ctx["rm_jquery"] = True  # weird issue with this and autocomplet init
     return render(request, "transactions/edit_transaction.html", ctx)
 
 

@@ -1,0 +1,40 @@
+<div class="ledger_row">
+    <hr>
+    <div class="row">
+        <div class="formColumn form-group col-md-3 mb-0">
+            <div id="div_id_ledger_account_0" class="form-group"> <label for="id_ledger_account_0"
+                    class="col-form-label  requiredField">
+                    Account<span class="asteriskField">*</span> </label>
+                <div class=""> <span role="status" aria-live="polite" class="ui-helper-hidden-accessible">1 result is
+                        available, use up and down arrow keys to navigate.</span><input type="text"
+                        name="ledger_account_0" id="id_ledger_account_0" value="" autocomplete="off"
+                        data-ajax-select="autocomplete"
+                        data-plugin-options='{"source": "/ajax_select/ajax_lookup/accounts", "html": true}'
+                        class="autocompletewidget form-control ui-autocomplete-input" maxlength="255"
+                        required="required">
+
+                    <p class="help">Enter text to search.</p>
+                </div>
+            </div>
+        </div>
+        <div class="formColumn form-group col-md-4 mb-0">
+            <div id="div_id_ledger_memo_0" class="form-group"> <label for="id_ledger_memo_0" class="col-form-label ">
+                    Memo
+                </label>
+                <div class=""> <input type="text" name="ledger_memo_0" maxlength="25"
+                        class="textinput textInput form-control" id="id_ledger_memo_0"> </div>
+            </div>
+        </div>
+        <div class="formColumn form-group col-md-4 mb-0">
+            <div id="div_id_ledger_amount_0" class="form-group"> <label for="id_ledger_amount_0"
+                    class="col-form-label  requiredField">
+                    Amount<span class="asteriskField">*</span> </label>
+                <div class=""> <input type="number" name="ledger_amount_0" step="0.01" class="numberinput form-control"
+                        required="" id="id_ledger_amount_0"> </div>
+            </div>
+        </div>
+        <button type="button" onclick="rm_row($(this).closest('.ledger_row'));"
+            class="form-group btn btn-sm btn-danger">X</button>
+    </div>
+    <hr>
+</div>
