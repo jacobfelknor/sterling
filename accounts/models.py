@@ -12,19 +12,24 @@ class Account(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="accounts")
 
     ACCOUNT_TYPE_CHOICES = [
-        ("Checking", "Checking"),
-        ("Savings", "Savings"),
-        ("Investment", "Investment"),
-        ("Other", "Other"),
+        ("Asset", "Asset"),
+        ("Liability", "Liability"),
+        ("Expense", "Expense"),
+        ("Income", "Income"),
     ]
+
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     slug = models.SlugField()
     name = models.CharField("Account Name", max_length=50)
-    number = models.IntegerField("Account Number")
+    number = models.CharField("Account Number", max_length=50)
     balance = models.DecimalField("Balance", max_digits=65, decimal_places=2, default=0)
     account_type = models.CharField("Type", max_length=10, choices=ACCOUNT_TYPE_CHOICES)
     bank = models.CharField("Bank", max_length=20, null=True)
     notes = models.TextField(null=True)
+
+    # self recursive relationship (essentially sub-account/categories)
+    parent = models.OneToOneField("accounts.Account", on_delete=models.CASCADE, null=True)
+    child = models.ForeignKey("accounts.Account", on_delete=models.SET_NULL, related_name="children", null=True)
 
     def get_absolute_url(self):
         return reverse("accounts:view", args=(self.slug,))

@@ -3,6 +3,7 @@ import csv
 import decimal
 import io
 from datetime import datetime
+from itertools import zip_longest
 
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
@@ -14,10 +15,16 @@ from django.views.generic import CreateView, DetailView, UpdateView
 from accounts.models import Account
 
 from .forms import TransactionForm
-from .models import Transaction
+from .models import Transaction, Ledger
 from .serializers import TransactionSerializer
 
 # Create your views here.
+
+# Group by 3, the number of fields for each ledger. Produces list of tuples where
+# each tuple contains info for each ledge. Default n=3, the number of fields per user
+def grouper(iterable, n=3, fillvalue=""):
+    args = [iter(iterable)] * n
+    return zip_longest(*args, fillvalue=fillvalue)
 
 
 def transaction_ajax(request):
@@ -105,6 +112,43 @@ class CreateTransaction(CreateView):
         form.instance.notes = get("notes")
         form.save()
         return redirect("accounts:view", slug=uuid)
+
+
+def transaction_form(request):
+    ctx = {}
+    if request.method == "POST":
+        data = request.POST
+        print(data)
+        # filter here - get ledger information fields
+        field_dict = list(filter(lambda x: "ledger_" in x, request.POST))
+        grouped_fields = list(grouper(field_dict))
+
+        # Transaction info
+        date = data["date"]
+        notes = data["notes"]
+        name = data["name"]
+        transaction = Transaction(date=datetime.strptime(date, "%m/%d/%Y"), notes=notes, name=name)
+        transaction.save()
+
+        print(grouped_fields)
+        for group in grouped_fields:
+            # Ledger Account info
+            account = Account.objects.get(name=data[group[0]])  # lookup by name
+            memo = data[group[1]]
+            amount = data[group[2]]
+
+            new_ledger = Ledger(account=account, memo=memo, amount=amount, transaction=transaction)
+            new_ledger.save()
+
+        return redirect("accounts:view", slug=data["account_uuid"])
+
+    else:
+        # initialize new form
+        uuid = request.GET.get("account")
+        form = TransactionForm(uuid=uuid)
+        ctx["message"] = "Create a Transaction"
+    ctx["form"] = form
+    return render(request, "transactions/edit_transaction.html", ctx)
 
 
 class TransactionEdit(UpdateView):

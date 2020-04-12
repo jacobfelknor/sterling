@@ -6,18 +6,14 @@
 
 {% block content %}
 
-<div class="card border-dark mb-3">
-  <h2 class="card-header">{{ message }}</h2>
-  <div class="col-md-8 col-sm-10 col-12">
-    <form method="post" novalidate>
+<div class="card border-dark">
+  <div class="card-header h3">{{ message }}</div>
+  <div class="card-body">
+    <form action="{% url 'transactions:transaction_form' %}" method="post">
       {% csrf_token %}
-      <input type="hidden" name="next" value="{{ next }}">
       {{ form.media }}
-      {{ form|crispy }}
-      <button type="submit" class="btn btn-outline-success"><i class="fa fa-floppy-o" aria-hidden="true"></i>
-        Save</button>
+      {% crispy form %}
     </form>
-    <br>
   </div>
 </div>
 {% endblock %}

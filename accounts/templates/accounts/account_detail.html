@@ -49,11 +49,11 @@
             <tbody>
             </tbody>
         </table>
-        <a href="{% url 'transactions:create' %}?account={{ object.uuid }}"><button class="btn btn-outline-success"><i
-                    class="fa fa-plus-circle" aria-hidden="true"></i> Add</button></a>
-        <a href="{% url 'transactions:import' %}?uuid={{ object.uuid }}"><button class="btn btn-outline-primary"><i
-                    class="fa fa-cloud-upload" aria-hidden="true"></i> Import
-                CSV</button></a>
+        <a href="{% url 'transactions:transaction_form' %}?account={{ object.uuid }}"><button
+                class="btn btn-outline-success"><i class="fa fa-plus-circle" aria-hidden="true"></i> Add</button></a>
+        <!-- <a href="{% url 'transactions:import' %}?uuid={{ object.uuid }}"><button class="btn btn-outline-primary"><i -->
+        <!-- class="fa fa-cloud-upload" aria-hidden="true"></i> Import -->
+        <!-- CSV</button></a> -->
     </div> <!-- card-body -->
 </div> <!-- card -->
 
