@@ -50,8 +50,8 @@ class Ledger(models.Model):
     #     ("D", "Debit"),
     # ]
     # t_type = models.CharField("Type", max_length=10, choices=TRANSACTION_TYPE_CHOICES)
-    transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE, related_name="ledger_entries")
-    account = models.ForeignKey(Account, on_delete=models.CASCADE, related_name="ledger_entries")
+    transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE, related_name="ledgers")
+    account = models.ForeignKey(Account, on_delete=models.CASCADE, related_name="ledgers")
 
     memo = models.CharField("Memo", max_length=100, null=True)
     amount = models.DecimalField("Amount", max_digits=65, decimal_places=2, null=True)

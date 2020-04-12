@@ -42,7 +42,6 @@
                 <tr>
                     <th>Date</th>
                     <th>Name</th>
-                    <th>Category</th>
                     <th>Amount</th>
                 </tr>
             </thead>
@@ -51,8 +50,6 @@
         </table>
         <a href="{% url 'transactions:transaction_form' %}?account={{ object.uuid }}"><button
                 class="btn btn-outline-success"><i class="fa fa-plus-circle" aria-hidden="true"></i> Add</button></a>
-        <!-- <a href="{% url 'transactions:import' %}?uuid={{ object.uuid }}"><button class="btn btn-outline-primary"><i -->
-        <!-- class="fa fa-cloud-upload" aria-hidden="true"></i> Import -->
         <!-- CSV</button></a> -->
     </div> <!-- card-body -->
 </div> <!-- card -->
@@ -101,18 +98,17 @@
             {
                 "data": "name",
                 "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                    $(nTd).html("<a href='{% url 'transactions:view' 1234 %}'>".replace(/1234/, oData.uuid.toString()) + oData.name + "</a>");
+                    $(nTd).html("<a href='{% url 'transactions:transaction_view' 1234 5678 %}'>".replace(/1234/, oData.account.toString()).replace(/5678/, oData.uuid.toString()) + oData.name + "</a>");
                 },
                 "class": "nowrap"
             },
-            { "data": "category" },
             {
                 "data": "amount",
                 "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                     if (oData.amount > 0) {
-                        $(nTd).html("<span style='color:#0ac775;'>$" + oData.amount.toFixed(2) + "</span>");
+                        $(nTd).html("<span style='color:#0ac775;'>$" + Number(oData.amount).toFixed(2) + "</span>");
                     } else {
-                        $(nTd).html("<span style='color:red;'>-$" + (-1 * oData.amount).toFixed(2) + "</span>");
+                        $(nTd).html("<span style='color:red;'>-$" + (-1 * Number(oData.amount)).toFixed(2) + "</span>");
                     }
                 }
             },
