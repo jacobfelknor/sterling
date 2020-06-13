@@ -23,3 +23,16 @@ Objects::
 
 Goal::
     - A fully qualified accounting system that tracks where money comes from and where it goes
+
+
+TODO::
+    - Consider whether account # and Bank is neccessary
+    - When adding a category, reflect this in form title
+
+    - Figure out more elegant way to add transactions
+        - fill in account info auto when coming from an account detail
+
+    - Tie keywords to a user... right now they are global. Not good
+
+    - Update the Edit, Delete views for transactions.
+        - make sure all show functionality works
