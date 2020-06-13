@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="card border">
+    <h2 class="card-header">Your Keywords</h2>
+    <div class="card-body">
+        <ul>
+            {% for keyword in keywords %}
+            <li>{{ keyword.name }}</li>
+            {% endfor %}
+        </ul>
+    </div> <!-- card-body -->
+</div> <!-- card -->
+
+{% endblock %}

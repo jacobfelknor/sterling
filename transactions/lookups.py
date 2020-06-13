@@ -1,6 +1,6 @@
 from ajax_select import register, LookupChannel
 from .models import Transaction
-from accounts.models import Account
+from accounts.models import Account, Keyword
 
 
 @register("categories")
@@ -41,6 +41,29 @@ class AccountLookup(LookupChannel):
 
     def format_match(self, item):
         return u"<span class='tag'>%s</span>" % item
+
+    def get_result(self, item):
+        return u"%s" % item
+
+    def check_auth(self, request):
+        if request.user.is_authenticated:
+            return True
+        else:
+            return False
+
+
+@register("keywords")
+class KeywordLookup(LookupChannel):
+    model = Keyword
+
+    def get_query(self, q, request):
+        return self.model.objects.filter(name__icontains=q).order_by("name")[:50]
+
+    def format_item_display(self, item):
+        return u"<span class='tag'>%s</span>" % item.name
+
+    def format_match(self, item):
+        return u"<span class='tag'>%s</span>" % item.name
 
     def get_result(self, item):
         return u"%s" % item

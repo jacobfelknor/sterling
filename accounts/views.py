@@ -5,7 +5,7 @@ from django.shortcuts import redirect
 from django.views.generic import CreateView, DetailView, ListView, UpdateView
 
 from .forms import AccountForm
-from .models import Account
+from .models import Account, Keyword
 from .serializers import AccountSerializer
 
 # Create your views here.
@@ -45,9 +45,9 @@ class EditAccount(UserPassesTestMixin, UpdateView):  # Note that we are using Up
         auth_user = self.get_object().user
         return self.request.user == auth_user
 
-    # redirect to this url on successful save
-    # def get_success_url(self, *args, **kwargs):
-    #     return reverse("accounts.views.view_account")
+    def form_valid(self, form):
+        # custom here if needed
+        return super().form_valid(form)
 
 
 def delete_account(request, slug):
@@ -84,3 +84,8 @@ def account_ajax(request):
         accounts = [x for x in request.user.accounts.all() if not x.is_category]
     response = AccountSerializer(accounts, many=True)
     return JsonResponse(response.data, safe=False)
+
+
+class KeywordList(ListView):
+    model = Keyword
+    context_object_name = "keywords"

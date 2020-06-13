@@ -3,7 +3,7 @@ Objects::
         - can either be a true account, or a category
         - accounts are liability/asset accounts
         - categories are expense/income accounts
-        - Are set up to have a heirearchial relationship
+        - Are set up to have a hierarchical relationship
             - accounts can have parent/child accounts
             - not currently used
 
@@ -15,6 +15,10 @@ Objects::
     - Ledger
         - an entry within a transaction
         - associated with a transaction, as well as the account it describes
+
+    - Keyword
+        - a way to group multiple accounts together. For example, one may have a "Fast Food" and a "Restaurants" account/category that they tie together using the "Food" Keyword. Thinking this may replace the hierarchical
+        relationship between accounts
 
 
 Goal::
