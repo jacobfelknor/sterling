@@ -1,0 +1,21 @@
+Objects::
+    - Account
+        - can either be a true account, or a category
+        - accounts are liability/asset accounts
+        - categories are expense/income accounts
+        - Are set up to have a heirearchial relationship
+            - accounts can have parent/child accounts
+            - not currently used
+
+    - Transaction
+        - a event describing movement in money between accounts.
+        - Simply a way to tie multiple ledgers together
+        - not directly associated with any account
+
+    - Ledger
+        - an entry within a transaction
+        - associated with a transaction, as well as the account it describes
+
+
+Goal::
+    - A fully qualified accounting system that tracks where money comes from and where it goes

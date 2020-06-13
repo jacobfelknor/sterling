@@ -60,7 +60,5 @@ class Ledger(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         # only save account balance after the transaction has been successfully saved
-        print(type(self.amount))
-
         self.account.balance += decimal.Decimal(self.amount)
         self.account.save()

@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="card border">
-  <h2 class="card-header">Your Accounts</h2>
+  <h2 class="card-header">Your {% if not categories %}Accounts{% else %}Categories{% endif %}</h2>
   <div class="card-body">
     <table id="account_list" class="table dt-responsive table-striped" cellspacing="0" width="100%">
       <thead class="thead">
@@ -48,7 +48,11 @@
     stateSave: true,
     ajax: {
       "processing": true,
-      "url": "{% url 'accounts:account_ajax' %}", //'accounts:account_ajax'
+      // {% if categories %}
+      "url": "{% url 'accounts:account_ajax' %}?categories=true",
+      // {% else %}
+      "url": "{% url 'accounts:account_ajax' %}",
+      // {% endif %}
       "dataSrc": ""
     },
     columns: [

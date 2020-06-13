@@ -72,10 +72,15 @@ class AccountList(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
+        if self.request.GET.get("categories"):  # show categories instead of normal accounts
+            ctx["categories"] = True
         return ctx
 
 
 def account_ajax(request):
-    accounts = [x for x in request.user.accounts.all() if not x.is_category]
+    if request.GET.get("categories"):
+        accounts = [x for x in request.user.accounts.all() if x.is_category]
+    else:
+        accounts = [x for x in request.user.accounts.all() if not x.is_category]
     response = AccountSerializer(accounts, many=True)
     return JsonResponse(response.data, safe=False)

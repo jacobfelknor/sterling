@@ -41,7 +41,7 @@
             </thead>
             {% for ledger in ledgers %}
             <tr>
-                <td>{{ ledger.account.name }}</td>
+                <td><a href="{{ ledger.account.get_absolute_url }}">{{ ledger.account.name }}</a></td>
                 <td>{{ ledger.memo }}</td>
                 <td>{{ ledger.amount }}</td>
             </tr>
