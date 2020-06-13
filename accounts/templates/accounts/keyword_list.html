@@ -5,11 +5,18 @@
 <div class="card border">
     <h2 class="card-header">Your Keywords</h2>
     <div class="card-body">
+        {% for keyword in keywords %}
+        <h2>{{ keyword.name }}</h2>
         <ul>
-            {% for keyword in keywords %}
-            <li>{{ keyword.name }}</li>
+            {% if keyword.accounts.count %}
+            {% for account in keyword.accounts.all %}
+            <li><a href="{{ account.get_absolute_url }}">{{ account.name }}</a></li>
             {% endfor %}
+            {% else %}
+            <li>No accounts under this keyword</li>
+            {% endif %}
         </ul>
+        {% endfor %}
     </div> <!-- card-body -->
 </div> <!-- card -->
 
