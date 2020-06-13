@@ -76,6 +76,6 @@ class AccountList(LoginRequiredMixin, ListView):
 
 
 def account_ajax(request):
-    accounts = request.user.accounts.all()
+    accounts = [x for x in request.user.accounts.all() if not x.is_category]
     response = AccountSerializer(accounts, many=True)
     return JsonResponse(response.data, safe=False)

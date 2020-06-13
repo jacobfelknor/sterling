@@ -1,3 +1,4 @@
+import decimal
 import uuid
 
 from django.db import models
@@ -37,7 +38,7 @@ class Transaction(models.Model):
     #             self.category += word.capitalize() + " "
     #         else:
     #             self.category += word.capitalize()
-    #     super(Transaction, self).save(*args, **kwargs)
+    #     super().save(*args, **kwargs)
     #     # only save account balance after the transaction has been successfully saved
     #     self.account.balance += self.amount
     #     self.account.save()
@@ -55,3 +56,11 @@ class Ledger(models.Model):
 
     memo = models.CharField("Memo", max_length=100, null=True)
     amount = models.DecimalField("Amount", max_digits=65, decimal_places=2, null=True)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        # only save account balance after the transaction has been successfully saved
+        print(type(self.amount))
+
+        self.account.balance += decimal.Decimal(self.amount)
+        self.account.save()

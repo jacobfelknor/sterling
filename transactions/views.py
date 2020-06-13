@@ -22,6 +22,7 @@ from .serializers import TransactionSerializer
 
 # Create your views here.
 
+
 # Group by 3, the number of fields for each ledger. Produces list of tuples where
 # each tuple contains info for each ledge. Default n=3, the number of fields per user
 def grouper(iterable, n=3, fillvalue=""):
@@ -44,7 +45,7 @@ def transaction_form(request):
     ctx = {}
     if request.method == "POST":
         data = request.POST
-        print(data)
+        # print(data)
         # filter here - get ledger information fields
         field_dict = list(filter(lambda x: "ledger_" in x, request.POST))
         grouped_fields = list(grouper(field_dict))
@@ -56,7 +57,7 @@ def transaction_form(request):
         transaction = Transaction(date=datetime.strptime(date, "%m/%d/%Y"), notes=notes, name=name)
         transaction.save()
 
-        print(grouped_fields)
+        # print(grouped_fields)
         for group in grouped_fields:
             # Ledger Account info
             account = Account.objects.get(name=data[group[0]])  # lookup by name
@@ -74,7 +75,7 @@ def transaction_form(request):
         form = TransactionForm(uuid=uuid)
         ctx["message"] = "Create a Transaction"
 
-    # grab additional visitor row html as a string for template context
+    # grab additional row html as a string for template context
     row = html.unescape(render_to_string("transactions/row.html").replace("\n", ""))
     ctx["form"] = form
     ctx["row"] = row

@@ -36,4 +36,11 @@ class Account(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = self.uuid
-        super(Account, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
+
+    @property
+    def is_category(self):
+        if self.account_type in ["Expense", "Income"]:
+            return True
+        else:
+            return False
