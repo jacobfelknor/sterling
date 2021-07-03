@@ -36,7 +36,7 @@ SECRET_KEY = secret_key
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "172.19.87.88"]
 
 
 # Application definition
@@ -92,23 +92,23 @@ WSGI_APPLICATION = "sterling.wsgi.application"
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.postgresql',
-    #     'NAME': 'sterling',
-    #     'USER': 'postgres',
-    #     'PASSWORD': db_password,
-    #     'HOST': 'localhost',
-    #     'PORT': '5432'
-    # }
     "default": {
-        "ENGINE": "mysql.connector.django",
+        "ENGINE": "django.db.backends.postgresql",
         "NAME": "sterling",
-        "USER": "root",
+        "USER": "postgres",
         "PASSWORD": db_password,
-        "HOST": "localhost",
-        "PORT": "3306",
-        "OPTIONS": {"autocommit": True},
+        "HOST": "172.19.80.1",
+        "PORT": "5432",
     }
+    # "default": {
+    #     "ENGINE": "mysql.connector.django",
+    #     "NAME": "sterling",
+    #     "USER": "root",
+    #     "PASSWORD": db_password,
+    #     "HOST": "localhost",
+    #     "PORT": "3306",
+    #     "OPTIONS": {"autocommit": True},
+    # }
 }
 
 
