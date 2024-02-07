@@ -1,4 +1,4 @@
-django==2.2.24
+django==3.2.24
 psycopg2==2.8.3 # for postgres
 mysql-connector-python==8.0.19 # for mysql
 django-crispy-forms==1.7.2
